@@ -1,7 +1,10 @@
-import { useEffect } from "react";
-import { useRouter } from "next/router";
+import React, { useEffect } from "react";
+import Router, { useRouter } from "next/router";
+
 import { useDispatch } from "react-redux";
+
 import { useProfile } from "@common/UserHooks";
+
 import { logoutUser } from "Components/slices/thunk";
 
 export default function Index() {

@@ -17,7 +17,6 @@ import { userForgetPassword } from 'Components/slices/thunk';
 import logoLightFull from "@assets/images/logo-light-full.png";
 import authEffect2 from "@assets/images/effect-pattern/auth-effect-2.png";
 import authEffect from "@assets/images/effect-pattern/auth-effect.png";
-import { createSelector } from 'reselect';
 
 const PassResetBasic = (props: any) => {
     const dispatch: any = useDispatch();
@@ -37,20 +36,10 @@ const PassResetBasic = (props: any) => {
         }
     });
 
-
-    const selectLayoutState = (state: any) => state.ForgetPassword;
-    const selectLayoutProperties = createSelector(
-        selectLayoutState,
-        (ForgetPassword) => ({
-            forgetError: ForgetPassword.forgetError,
-            forgetSuccessMsg: ForgetPassword.forgetSuccessMsg,
-        })
-    );
-    // Inside your component
-    const {
-        forgetError,
-        forgetSuccessMsg
-    } = useSelector(selectLayoutProperties);
+    const { forgetError, forgetSuccessMsg } = useSelector((state: any) => ({
+        forgetError: state.ForgetPassword.forgetError,
+        forgetSuccessMsg: state.ForgetPassword.forgetSuccessMsg,
+    }));
 
     return (
         <React.Fragment>

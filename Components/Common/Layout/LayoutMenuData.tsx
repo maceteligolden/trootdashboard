@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import Router from "next/router";
 const Navdata = () => {
     //state data
-    const [isArticle, setIsArticle] = useState(false);
-    const [isBlog, setIsBlog] = useState(false);
+    const [isAuth, setIsAuth] = useState(false);
+    const [isPages, setIsPages] = useState(false);
     const [isMultiLevel, setIsMultiLevel] = useState(false);
 
     // Authentication
@@ -45,11 +45,11 @@ const Navdata = () => {
 
       useEffect(() => {
         document.body.classList.remove('twocolumn-panel');
-        if (isCurrentState !== 'Article') {
-            setIsArticle(false);
+        if (isCurrentState !== 'Auth') {
+            setIsAuth(false);
         }
-        if (isCurrentState !== 'Blog') {
-            setIsBlog(false);
+        if (isCurrentState !== 'Pages') {
+            setIsPages(false);
         }
         if (isCurrentState !== 'MuliLevel') {
             setIsMultiLevel(false);
@@ -84,12 +84,16 @@ const Navdata = () => {
         }
     }, [
         isCurrentState,
-        isArticle,
-        isBlog,
+        isAuth,
+        isPages,
         isMultiLevel
     ]);
 
     const menuItems: any = [
+        {
+            label: "Menu",
+            isHeader: true,
+        },
         {
             id: "dashboard",
             label: "Dashboard",
@@ -101,59 +105,339 @@ const Navdata = () => {
             }
         },
         {
-            id: "blogs",
-            label: "Blogs",
-            icon: "bi bi-journal-medical",
+            label: "Pages",
+            isHeader: true,
+        },
+        {
+            id: "authentication",
+            label: "Authentication",
+            icon: "bi bi-person-circle",
             link: "/#",
             click: function (e: any) {
                 e.preventDefault();
-                setIsBlog(!isBlog);
-                setIsCurrentState('Blog');
+                setIsAuth(!isAuth);
+                setIsCurrentState('Auth');
                 updateIconSidebar(e);
             },
-            stateVariables: isBlog,
+            stateVariables: isAuth,
             subItems: [
                 {
-                    id: "manage blog",
-                    label: "Manage Blogs",
-                    link: "/blogs",
-                    parentId: "blogs",
+                    id: "signIn",
+                    label: "Sign In",
+                    link: "/#",
+                    isChildItem: true,
+                    click: function (e: any) {
+                        e.preventDefault();
+                        setIsSignIn(!isSignIn);
+                    },
+                    parentId: "authentication",
+                    stateVariables: isSignIn,
+                    childItems: [
+                        { id: 1, label: "Basic", link: "#" },
+                        { id: 2, label: "Basic 2", link: "#" },
+                        { id: 3, label: "Cover", link: "#" },
+                    ]
                 },
                 {
-                    id: "categories",
-                    label: "Categories",
-                    link: "/blogs/categories",
-                    parentId: "blogs"
-                }
+                    id: "signUp",
+                    label: "Sign Up",
+                    link: "/#",
+                    isChildItem: true,
+                    click: function (e: any) {
+                        e.preventDefault();
+                        setIsSignUp(!isSignUp);
+                    },
+                    parentId: "authentication",
+                    stateVariables: isSignUp,
+                    childItems: [
+                        { id: 1, label: "Basic", link: "#" },
+                        { id: 2, label: "Basic 2", link: "#" },
+                        { id: 3, label: "Cover", link: "#" },
+                    ]
+                },
+                {
+                    id: "passwordReset",
+                    label: "Password Reset",
+                    link: "/#",
+                    isChildItem: true,
+                    click: function (e: any) {
+                        e.preventDefault();
+                        setIsPasswordReset(!isPasswordReset);
+                    },
+                    parentId: "authentication",
+                    stateVariables: isPasswordReset,
+                    childItems: [
+                        { id: 1, label: "Basic", link: "#" },
+                        { id: 2, label: "Basic 2", link: "#" },
+                        { id: 3, label: "Cover", link: "#" },
+                    ]
+                },
+                {
+                    id: "passwordCreate",
+                    label: "Password Create",
+                    link: "/#",
+                    isChildItem: true,
+                    click: function (e: any) {
+                        e.preventDefault();
+                        setIsPasswordCreate(!isPasswordCreate);
+                    },
+                    parentId: "authentication",
+                    stateVariables: isPasswordCreate,
+                    childItems: [
+                        { id: 1, label: "Basic", link: "#" },
+                        { id: 2, label: "Basic 2", link: "#" },
+                        { id: 3, label: "Cover", link: "#" },
+                    ]
+                },
+                {
+                    id: "lockScreen",
+                    label: "Lock Screen",
+                    link: "/#",
+                    isChildItem: true,
+                    click: function (e: any) {
+                        e.preventDefault();
+                        setIsLockScreen(!isLockScreen);
+                    },
+                    parentId: "authentication",
+                    stateVariables: isLockScreen,
+                    childItems: [
+                        { id: 1, label: "Basic", link: "#" },
+                        { id: 2, label: "Basic 2", link: "#" },
+                        { id: 3, label: "Cover", link: "#" },
+                    ]
+                },
+                {
+                    id: "logout",
+                    label: "Logout",
+                    link: "/#",
+                    isChildItem: true,
+                    click: function (e: any) {
+                        e.preventDefault();
+                        setIsLogout(!isLogout);
+                    },
+                    parentId: "authentication",
+                    stateVariables: isLogout,
+                    childItems: [
+                        { id: 1, label: "Basic", link: "#" },
+                        { id: 2, label: "Basic 2", link: "#" },
+                        { id: 3, label: "Cover", link: "#" },
+                    ]
+                },
+                {
+                    id: "successMessage",
+                    label: "Success Message",
+                    link: "/#",
+                    isChildItem: true,
+                    click: function (e: any) {
+                        e.preventDefault();
+                        setIsSuccessMessage(!isSuccessMessage);
+                    },
+                    parentId: "authentication",
+                    stateVariables: isSuccessMessage,
+                    childItems: [
+                        { id: 1, label: "Basic", link: "#" },
+                        { id: 2, label: "Basic 2", link: "#" },
+                        { id: 3, label: "Cover", link: "#" },
+                    ]
+                },
+                {
+                    id: "twoStepVerification",
+                    label: "Two Step Verification",
+                    link: "/#",
+                    isChildItem: true,
+                    click: function (e: any) {
+                        e.preventDefault();
+                        setIsVerification(!isVerification);
+                    },
+                    parentId: "authentication",
+                    stateVariables: isVerification,
+                    childItems: [
+                        { id: 1, label: "Basic", link: "#" },
+                        { id: 2, label: "Basic 2", link: "#" },
+                        { id: 3, label: "Cover", link: "#" },
+                    ]
+                },
+                {
+                    id: "errors",
+                    label: "Errors",
+                    link: "/#",
+                    isChildItem: true,
+                    click: function (e: any) {
+                        e.preventDefault();
+                        setIsError(!isError);
+                    },
+                    parentId: "authentication",
+                    stateVariables: isError,
+                    childItems: [
+                        { id: 1, label: "404 Basic", link: "#" },
+                        { id: 2, label: "404 Cover", link: "#" },
+                        { id: 3, label: "404 Alt", link: "#" },
+                        { id: 4, label: "500", link: "#" },
+                        { id: 5, label: "Offline Page", link: "#" },
+                    ]
+                },
             ],
         },
         {
-            id: "articles",
-            label: "Articles",
+            id: "pages",
+            label: "Pages",
             icon: "bi bi-journal-medical",
             link: "/#",
             click: function (e: any) {
                 e.preventDefault();
-                setIsArticle(!isArticle);
-                setIsCurrentState('Article');
+                setIsPages(!isPages);
+                setIsCurrentState('Pages');
                 updateIconSidebar(e);
             },
-            stateVariables: isArticle,
+            stateVariables: isPages,
             subItems: [
                 {
-                    id: "manage article",
-                    label: "Manage Articles",
-                    link: "/articles",
-                    parentId: "articles",
+                    id: "starter",
+                    label: "Starter",
+                    link: "#",
+                    parentId: "pages",
                 },
                 {
-                    id: "categories",
-                    label: "Categories",
-                    link: "/articles/categories",
-                    parentId: "articles"
-                }
+                    id: "profile",
+                    label: "Profile",
+                    link: "/#",
+                    isChildItem: true,
+                    click: function (e: any) {
+                        e.preventDefault();
+                        setIsProfile(!isProfile);
+                    },
+                    parentId: "pages",
+                    stateVariables: isProfile,
+                    childItems: [
+                        { id: 1, label: "Simple Page", link: "#", parentId: "pages" },
+                        { id: 2, label: "Settings", link: "#", parentId: "pages" },
+                    ]
+                },
+                { id: "team", label: "Team", link: "#", parentId: "pages" },
+                { id: "timeline", label: "Timeline", link: "#", parentId: "pages" },
+                { id: "faqs", label: "FAQs", link: "#", parentId: "pages" },
+                { id: "pricing", label: "Pricing", link: "#", parentId: "pages" },
+                { id: "maintenance", label: "Maintenance", link: "#", parentId: "pages" },
+                { id: "comingSoon", label: "Coming Soon", link: "#", parentId: "pages" },
+                { id: "sitemap", label: "Sitemap", link: "#", parentId: "pages" },
+                { id: "searchResults", label: "Search Results", link: "#", parentId: "pages" },
             ],
         },
+        {
+            id: "widgets",
+            label: "Widgets",
+            icon: "bi bi-hdd-stack",
+            link: "/#",
+            click: function (e: any) {
+                e.preventDefault();
+                setIsCurrentState('Widgets');
+            },
+        },
+        {
+            id: "components",
+            label: "Components",
+            icon: "bi bi-layers",
+            isBlankLink : true,
+            link: "#",
+            click: function (e: any) {
+                e.preventDefault();
+                setIsCurrentState('Components');
+              },
+        },
+        {
+            label: "Apps",
+            isHeader: true,
+        },
+        {
+            id: "calendar",
+            label: "Calendar",
+            icon: "bi bi-calendar3",
+            link: "#",
+            click: function (e: any) {
+                e.preventDefault();
+                setIsCurrentState('Calendar');
+            }
+        },
+        {
+            id: "api-key",
+            label: "API Key",
+            icon: "bi bi-key",
+            link: "#",
+            click: function (e: any) {
+                e.preventDefault();
+                setIsCurrentState('API Key');
+            }
+        },
+        {
+            id: "contact",
+            label: "Contact",
+            icon: "bi bi-person-square",
+            link: "#",
+            click: function (e: any) {
+                e.preventDefault();
+                setIsCurrentState('Contact');
+            }
+        },
+        {
+            id: "leaderboard",
+            label: "Leaderboard",
+            icon: "bi bi-gem",
+            link: "#",
+            click: function (e: any) {
+                e.preventDefault();
+                setIsCurrentState('Leaderboard');
+            }
+        },
+        {
+            label: "Layouts",
+            isHeader: true,
+        },
+        {
+            id: "multilevel",
+            label: "Multi Level",
+            icon: "bi bi-share",
+            link: "/#",
+            click: function (e: any) {
+                e.preventDefault();
+                setIsMultiLevel(!isMultiLevel);
+                setIsCurrentState('MuliLevel');
+                updateIconSidebar(e);
+            },
+            stateVariables: isMultiLevel,
+            subItems: [
+                { id: "level1.1", label: "Level 1.1", link: "/#", parentId: "multilevel" },
+                {
+                    id: "level1.2",
+                    label: "Level 1.2",
+                    link: "/#",
+                    isChildItem: true,
+                    click: function (e: any) {
+                        e.preventDefault();
+                        setIsLevel1(!isLevel1);
+                    },
+                    stateVariables: isLevel1,
+                    childItems: [
+                        { id: 1, label: "Level 2.1", link: "/#" },
+                        {
+                            id: "level2.2",
+                            label: "Level 2.2",
+                            link: "/#",
+                            isChildItem: true,
+                            click: function (e: any) {
+                                e.preventDefault();
+                                setIsLevel2(!isLevel2);
+                            },
+                            stateVariables: isLevel2,
+                            childItems: [
+                                { id: 1, label: "Level 3.1", link: "/#" },
+                                { id: 2, label: "Level 3.2", link: "/#" },
+                            ]
+                        },
+                    ]
+                },
+            ],
+        },
+
     ];
     return <React.Fragment>{menuItems}</React.Fragment>;
 };

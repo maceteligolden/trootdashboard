@@ -1,7 +1,10 @@
 import "../Components/assets/scss/themes.scss";
 import React, { ReactElement, ReactNode } from 'react';
 import Head from 'next/head';
+import { Provider } from "react-redux";
 import SSRProvider from 'react-bootstrap/SSRProvider';
+import { wrapper } from '../Components/slices';
+
 import { AppContext, AppInitialProps, AppLayoutProps, AppProps } from 'next/app';
 import type { NextComponentType, NextPage } from 'next';
 
@@ -25,8 +28,6 @@ import type { NextComponentType, NextPage } from 'next';
 
 // Fake backend
 import fakeBackend from "Components/helpers/AuthType/fakeBackend";
-import { wrapper } from "lib/store";
-import Authentication from "@common/Layout/Authentication";
 
 // Activating fake backend
 fakeBackend();
@@ -43,6 +44,7 @@ const MyApp: NextComponentType<AppContext, AppInitialProps, AppLayoutProps> = ({
   pageProps,
   ...rest
 }: AppPropsWithLayout) => {
+  const { store } = wrapper.useWrappedStore(rest);
   const getLayout = Component.getLayout || ((page) => page);
 
   return (
@@ -52,12 +54,12 @@ const MyApp: NextComponentType<AppContext, AppInitialProps, AppLayoutProps> = ({
         <title>Hybrix | Next js & Admin Dashboard </title>
       </Head>
       <SSRProvider>
-        <Authentication>
+        <Provider store={store}>
           {getLayout(<Component {...pageProps} />)}
-        </Authentication>
+        </Provider>
       </SSRProvider>
     </>
   );
 };
 
-export default wrapper.withRedux(MyApp);
+export default MyApp;

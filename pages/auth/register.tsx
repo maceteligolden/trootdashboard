@@ -21,7 +21,6 @@ import { useRouter } from 'next/router';
 import logoLightFull from "@assets/images/logo-light-full.png";
 import authEffect2 from "@assets/images/effect-pattern/auth-effect-2.png";
 import authEffect from "@assets/images/effect-pattern/auth-effect.png";
-import { createSelector } from 'reselect';
 
 const SingupBasic = () => {
     const history: any = useRouter();
@@ -48,22 +47,11 @@ const SingupBasic = () => {
         }
     });
 
-
-    const selectLayoutState = (state: any) => state.Account;
-    const selectLayoutProperties = createSelector(
-        selectLayoutState,
-        (register) => ({
-            registrationError: register.registrationError,
-            success: register.success,
-            error: register.error
-        })
-    );
-    // Inside your component
-    const {
-        error,
-        registrationError,
-        success
-    } = useSelector(selectLayoutProperties);
+    const { error, registrationError, success } = useSelector((state: any) => ({
+        registrationError: state.Account.registrationError,
+        success: state.Account.success,
+        error: state.Account.error
+    }));
 
     useEffect(() => {
         dispatch(apiError());

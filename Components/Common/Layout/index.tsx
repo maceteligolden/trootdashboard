@@ -22,7 +22,6 @@ import { useProfile } from "@common/UserHooks";
 import { useSelector, useDispatch } from "react-redux";
 import Footer from './Footer';
 import RightSidebar from '@common/RightSidebar';
-import { createSelector } from 'reselect';
 
 const Layout = ({ children }: any) => {
     const { userProfile } = useProfile();
@@ -41,24 +40,6 @@ const Layout = ({ children }: any) => {
     }, [])
 
     const dispatch: any = useDispatch();
-
-    const selectLayoutState = (state: any) => state.Layout;
-    const selectLayoutProperties = createSelector(
-        selectLayoutState,
-        (layout) => ({
-            layoutType: layout.layoutType,
-            leftSidebarType: layout.leftSidebarType,
-            layoutModeType: layout.layoutModeType,
-            layoutWidthType: layout.layoutWidthType,
-            layoutPositionType: layout.layoutPositionType,
-            topbarThemeType: layout.topbarThemeType,
-            leftsidbarSizeType: layout.leftsidbarSizeType,
-            leftSidebarViewType: layout.leftSidebarViewType,
-            leftSidebarImageType: layout.leftSidebarImageType,
-        })
-    );
-
-    // Inside your component
     const {
         layoutType,
         leftSidebarType,
@@ -69,8 +50,17 @@ const Layout = ({ children }: any) => {
         leftsidbarSizeType,
         leftSidebarViewType,
         leftSidebarImageType
-    } = useSelector(selectLayoutProperties);
-    
+    } = useSelector((state: any) => ({
+        layoutType: state.Layout.layoutType,
+        leftSidebarType: state.Layout.leftSidebarType,
+        layoutModeType: state.Layout.layoutModeType,
+        layoutWidthType: state.Layout.layoutWidthType,
+        layoutPositionType: state.Layout.layoutPositionType,
+        topbarThemeType: state.Layout.topbarThemeType,
+        leftsidbarSizeType: state.Layout.leftsidbarSizeType,
+        leftSidebarViewType: state.Layout.leftSidebarViewType,
+        leftSidebarImageType: state.Layout.leftSidebarImageType,
+    }));
 
     /*
     layout settings

@@ -45,7 +45,7 @@ const simplePageProjectData = [
 const pricingPriceList = [
     { id: 1, plan: "Startup", montlyPlane: "$19", annuPlane: "$171", delAnnuPlane: "$228", projects: "3", customers: "229", ftpLogin: "7", support: "No", storage: "2GB", checked: true },
     { id: 2, plan: "Professional", montlyPlane: "$29", annuPlane: "$261", delAnnuPlane: "$348", projects: "8", customers: "449", ftpLogin: "7", support: "24/7", storage: "8GB", checked: false },
-    { id: 3, plan: "Enterprise", planClass: "mb-2", badge: "15% save", badgeClass: "badge text-bg-danger", montlyPlane: "$39", annuPlane: "$351", delAnnuPlane: "$468", projects: "15", customers: "999", ftpLogin: "12", support: "24/7", storage: "16GB", checked: false },
+    { id: 3, plan: "Enterprise", montlyPlane: "$39", annuPlane: "$351", delAnnuPlane: "$468", projects: "15", customers: "999", ftpLogin: "12", support: "24/7", storage: "16GB", checked: false },
     { id: 4, plan: "Unlimited", montlyPlane: "$49", annuPlane: "$441", delAnnuPlane: "$588", projects: "Unlimited", customers: "Unlimited", ftpLogin: "Unlimited", support: "24/7", storage: "Unlimited", checked: false }
 ]
 
@@ -57,15 +57,15 @@ const pricingPlans = [
 ]
 
 const pricingPackageplan = [
-    { id: 1, icon: "ri-book-mark-line", plan: "Basic Plan", planfor: "For Startup", price: "19.99", uptoProject: "Upto", projects: "3", uptoCustomer: "Upto", customers: "299", ftpLogin: "5", btnColor: "soft-secondary", btntext: "Sign Up Free" },
-    { id: 2, icon: "ri-medal-line", plan: "Pro Business", planfor: "Professional plans", uptoProject: "Upto", price: "29.99", projects: "15", customers: "Unlimited", ftpLogin: "12", btnColor: "secondary", btntext: "Get Started", support: true },
+    { id: 1, icon: "ri-book-mark-line", plan: "Basic Plan", planfor: "For Startup", price: "19.99", projects: "3", customers: "299", ftpLogin: "5", btnColor: "soft-secondary", btntext: "Sign Up Free" },
+    { id: 2, icon: "ri-medal-line", plan: "Pro Business", planfor: "Professional plans", price: "29.99", projects: "15", customers: "Unlimited", ftpLogin: "12", btnColor: "secondary", btntext: "Get Started", support: true },
     { id: 3, icon: "ri-stack-line", plan: "Platinum Plan", planfor: "Enterprise Businesses", price: "39.99", projects: "Unlimited", customers: "Unlimited", ftpLogin: "Unlimited", btnColor: "soft-secondary", btntext: "Get Started", support: true, storage: true, domain: true },
 ]
 
 const pricingPriceplan = [
-    { id: 1, bgColor: "primary", plan: "Starter", planfor: "Starter plans", price: "22", color: "primary", users: "1", storage: "01 GB", domain: "No", support: "No", btnColor: "primary" },
-    { id: 2, bgColor: "danger", plan: "Professional", planfor: "Professional plans", price: "29.99", color: "danger", users: "1", storage: "01 GB", domain: "No", support: "No", btnColor: "danger", isRibbon: true },
-    { id: 3, bgColor: "info", plan: "Unlimited", planfor: "Unlimited plans", price: "49.99", color: "info", users: "5", storage: "40 GB", domain: "Yes", support: "Yes", btnColor: "info" },
+    { id: 1, bgColor: "primary", plan: "Starter", planfor: "Starter plans", price: "22", users: "1", storage: "01 GB", domain: "No", support: "No", btnColor: "primary" },
+    { id: 2, bgColor: "danger", plan: "Professional", planfor: "Professional plans", price: "29.99", users: "1", storage: "01 GB", domain: "No", support: "No", btnColor: "danger", isRibbon: true },
+    { id: 3, bgColor: "info", plan: "Unlimited", planfor: "Unlimited plans", price: "49.99", users: "5", storage: "40 GB", domain: "Yes", support: "Yes", btnColor: "info" },
 ]
 
 const searchResultsSwiperData = [

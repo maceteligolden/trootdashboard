@@ -27,8 +27,8 @@
 .navbar-menu {
     width: $vertical-menu-width;
     z-index: $vertical-menu-z-index;
-    background: var(--#{$prefix}vertical-menu-bg);
-    border-right: 1px solid var(--#{$prefix}vertical-menu-border);
+    background: $vertical-menu-bg;
+    border-right: 1px solid $vertical-menu-border;
     bottom: 0;
     margin-top: 0;
     position: fixed;
@@ -41,21 +41,21 @@
             display: flex;
             align-items: center;
             padding: $vertical-menu-item-padding-y $vertical-menu-item-padding-x;
-            color: var(--#{$prefix}vertical-menu-item-color);
+            color: $vertical-menu-item-color;
             font-size: $vertical-menu-item-font-size;
             font-family: $vertical-menu-item-font-family;
 
             &.active {
-                color: var(--#{$prefix}vertical-menu-item-active-color);
+                color: $vertical-menu-item-active-color;
             }
 
             &:hover {
-                color: var(--#{$prefix}vertical-menu-item-hover-color);
+                color: $vertical-menu-item-hover-color;
             }
 
             i {
                 display: inline-block;
-                min-width: var(--#{$prefix}vertical-menu-item-icon-width);
+                min-width: $vertical-menu-item-icon-width;
                 font-size: 16px;
                 line-height: inherit;
             }
@@ -63,7 +63,7 @@
             svg {
                 width: 18px;
                 margin-right: 0.665rem;
-                color: var(--#{$prefix}vertical-menu-item-color);
+                color: $vertical-menu-item-color;
             }
 
             .badge {
@@ -73,7 +73,7 @@
             }
 
             &:hover {
-                color: var(--#{$prefix}vertical-menu-item-hover-color);
+                color: $vertical-menu-item-hover-color;
             }
 
             &[data-bs-toggle=collapse] {
@@ -86,20 +86,20 @@
                     font-size: 1.05rem;
                     position: absolute;
                     right: 18px;
-                    color: var(--#{$prefix}vertical-menu-title-color);
+                    color: $vertical-menu-title-color;
                 }
 
                 &[aria-expanded=true] {
-                    color: var(--#{$prefix}vertical-menu-item-active-color);
+                    color: $vertical-menu-item-active-color;
 
                     &:after {
                         transform: rotate(90deg);
-                        color: var(--#{$prefix}vertical-menu-item-active-color);
+                        color: $vertical-menu-item-active-color;
                     }
 
                     &:before {
                         opacity: 1;
-                        background-color: var(--#{$prefix}vertical-menu-item-active-color);
+                        background-color: $vertical-menu-item-active-color;
                     }
                 }
             }
@@ -114,23 +114,23 @@
         }
 
         .nav-sm {
-            padding-left: var(--#{$prefix}vertical-menu-item-icon-width);
+            padding-left: $vertical-menu-item-icon-width;
 
             .nav-link {
                 padding: $vertical-menu-sub-item-padding-y $vertical-menu-sub-item-padding-x  !important;
-                color: var(--#{$prefix}vertical-menu-sub-item-color);
+                color: $vertical-menu-sub-item-color;
                 white-space: none;
                 position: relative;
                 font-size: $vertical-menu-sub-item-font-size;
                 font-family: $vertical-menu-sub-item-font-family;
 
                 &:hover {
-                    color: var(--#{$prefix}vertical-menu-sub-item-hover-color);
+                    color: $vertical-menu-sub-item-hover-color;
 
                 }
 
                 &.active {
-                    color: var(--#{$prefix}vertical-menu-item-active-color);
+                    color: $vertical-menu-item-active-color;
                 }
             }
 
@@ -177,7 +177,7 @@
     display: inline-block;
 
     span {
-        background-color:  var(--#{$prefix}header-item-sub-color);
+        background-color:   var(--#{$prefix}header-item-sub-color);
         position: absolute;
         border-radius: 2px;
         transition: .3s cubic-bezier(.8, .5, .2, 1.4);
@@ -592,8 +592,7 @@
                     .nav-item {
                         &:hover {
                             >.nav-link {
-                                color: var(--#{$prefix
-            }vertical-menu-item-hover-color);
+                                color: $vertical-menu-item-hover-color;
 
                                 &:after {
                                     color: inherit;
@@ -798,7 +797,7 @@
         }
 
         .footer {
-            border-top: 1px dashed var(--#{$prefix}border-color);
+            border-top: 1px dashed $border-color;
         }
 
         .auth-page-wrapper {
@@ -828,7 +827,7 @@
     cursor: default;
     font-size: 11px;
     text-transform: uppercase;
-    color: var(--#{$prefix}vertical-menu-title-color);
+    color: $vertical-menu-title-color;
     font-weight: $font-weight-semibold;
 
     span {

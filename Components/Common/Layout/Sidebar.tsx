@@ -43,25 +43,21 @@ const Sidebar = ({ layoutType }: SidebarProps) => {
       <div className="app-menu navbar-menu">
         <div className="navbar-brand-box">
           <Link href="/" className="logo logo-dark">
-            Trootfindr
-            {/** TODO: add trootfindr logo */}
-            {/* <span className="logo-sm">
+            <span className="logo-sm">
               <Image src={logosm} alt="" height="26" />
             </span>
             <span className="logo-lg">
               <Image src={logodark} alt="" height="26" priority={true} />
-            </span> */}
+            </span>
           </Link>
 
           <Link href="/" className="logo logo-light">
-            {/** TODO: add logo for trootfindr for mobile devices */}
-            TF
-            {/* <span className="logo-sm">
+            <span className="logo-sm">
               <Image src={logosm} alt="" height="26" />
             </span>
             <span className="logo-lg">
               <Image src={logolight} alt="" height="26" />
-            </span> */}
+            </span>
           </Link>
           <button
             onClick={addEventListenerOnSmHoverMenu}

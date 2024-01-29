@@ -15,7 +15,6 @@ import avatar from "@assets/images/users/avatar-1.jpg";
 // actions
 import { editProfile, resetProfileFlag } from "../../Components/slices/thunk";
 import Layout from "@common/Layout";
-import { createSelector } from "reselect";
 
 const UserProfile = () => {
   const dispatch: any = useDispatch();
@@ -25,20 +24,10 @@ const UserProfile = () => {
 
   const [userName, setUserName] = useState<string>("Admin");
 
-
-  const selectLayoutState = (state: any) => state.Profile;
-  const selectLayoutProperties = createSelector(
-    selectLayoutState,
-    (state) => ({
-      success:state.success,
-      error:state.error
-    })
-    ); 
-  // Inside your component
-  const {
-    success,
-    error
-  } = useSelector(selectLayoutProperties);
+  const { success, error } = useSelector((state: any) => ({
+    success: state.Profile.success,
+    error: state.Profile.error
+  }));
 
   useEffect(() => {
     if (localStorage.getItem("authUser")) {

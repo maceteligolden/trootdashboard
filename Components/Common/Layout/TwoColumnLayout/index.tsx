@@ -61,7 +61,7 @@ const TwoColumnLayout = (props: any) => {
         } else {
             if (process.env.PUBLIC_URL) {
                 var id = pathName.replace(process.env.PUBLIC_URL, '');
-                id = id.replace("/apps/", "");
+                id = id.replace("/", "");
             } else {
                 id = pathName.replace("/", "");
             }

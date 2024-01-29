@@ -69,7 +69,7 @@
 
 .alert-top-border {
     background-color: var(--#{$prefix}secondary-bg);
-    border-color: var(--#{$prefix}border-color);
+    border-color: $border-color;
     border-top: 2px solid;
     color: var(--#{$prefix}body-color);
 }

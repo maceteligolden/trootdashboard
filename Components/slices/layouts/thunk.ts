@@ -39,9 +39,11 @@ export const changeLayoutMode = (layoutMode: any) => async (dispatch: any) => {
         if (layoutMode === "dark") {
             dispatch(changeLayoutModeAction(layoutMode));
             dispatch(changeTopbarThemeAction(layoutMode));
+            dispatch(changeSidebarThemeAction(layoutMode));
         } else {
             dispatch(changeLayoutModeAction(layoutMode));
             dispatch(changeTopbarThemeAction(layoutMode));
+            dispatch(changeSidebarThemeAction(layoutMode));
         }
     } catch (error) { }
 };

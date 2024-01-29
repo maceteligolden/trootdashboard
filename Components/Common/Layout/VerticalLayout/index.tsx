@@ -10,19 +10,16 @@ import { useSelector } from 'react-redux';
 
 // Import Data
 import navdata from "../LayoutMenuData";
-import { createSelector } from 'reselect';
 
 const VerticalLayout = (props: any) => {
     const router = useRouter();
     const navData = navdata().props.children;
 
-
-    const selectDashboardData = createSelector(
-        (state: any) => state.Layout,
-        (leftsidbarSizeType) => leftsidbarSizeType
-    );
-    // Inside your component
-    const leftsidbarSizeType = useSelector(selectDashboardData);
+    const {
+        leftsidbarSizeType
+    } = useSelector((state: any) => ({
+        leftsidbarSizeType: state.Layout.leftsidbarSizeType,
+    }));
 
 
     //vertical and semibox resize events

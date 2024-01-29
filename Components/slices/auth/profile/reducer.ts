@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export const initialState = {
   error: "",
-  success: false,
+  success: "",
   user: {}
 };
 
@@ -11,7 +11,7 @@ const ProfileSlice = createSlice({
   initialState,
   reducers: { 
     profileSuccess(state, action) {
-      state.success = action.payload.status;
+      state.success = action.payload;
       state.user = action.payload.data
     },
     profileError(state, action) {
@@ -21,7 +21,7 @@ const ProfileSlice = createSlice({
       state = { ...state };
     },
     resetProfileFlagChange(state){
-      state.success = true,
+      state.success = "",
       state.error = ""
     }
   },

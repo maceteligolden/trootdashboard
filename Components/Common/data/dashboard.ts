@@ -21,83 +21,83 @@ import productImg8 from "@assets/images/products/img-8.png"
 
 const recentOrders = [
     {
-        purchaseID: "#TB010338",
-        customerName: "Macbook Pro",
-        productImage: avatar2,
-        productName: "Terry White",
-        amount: "$658.00",
-        orderDate: "28 Oct, 2022",
-        vendor: "Brazil",
-        status: "Paid"
+        purchaseID : "#TB010338",
+        customerName : "Macbook Pro",
+        productImage : avatar2,
+        productName : "Terry White",
+        amount : "$658.00",
+        orderDate : "28 Oct, 2022",
+        vendor : "Brazil",
+        status : "Paid"
     },
     {
-        purchaseID: "#TB010337",
-        customerName: "Macbook Pro",
-        productImage: avatar2,
-        productName: "Terry White",
-        amount: "$658.00",
-        orderDate: "28 Oct, 2022",
-        vendor: "Brazil",
-        status: "Paid"
+        purchaseID : "#TB010337",
+        customerName : "Macbook Pro",
+        productImage : avatar2,
+        productName : "Terry White",
+        amount : "$658.00",
+        orderDate : "28 Oct, 2022",
+        vendor : "Brazil",
+        status : "Paid"
     },
     {
-        purchaseID: "#TB010336",
-        customerName: "Smart Watch for Man's",
-        productImage: avatar8,
-        productName: "Heather Jimenez",
-        amount: "$741.98",
-        orderDate: "02 Nov, 2022",
-        vendor: "Spain",
-        status: "Paid"
+        purchaseID : "#TB010336",
+        customerName : "Smart Watch for Man's",
+        productImage : avatar8,
+        productName : "Heather Jimenez",
+        amount : "$741.98",
+        orderDate : "02 Nov, 2022",
+        vendor : "Spain",
+        status : "Paid"
     },
     {
-        purchaseID: "#TB010335",
-        customerName: "Apple Headphone",
-        productImage: avatar9,
-        productName: "Scott Wilson",
-        amount: "$264.37",
-        orderDate: "01 Nov, 2022",
-        vendor: "Jersey",
-        status: "Unpaid"
-    }, {
-        purchaseID: "#TB010334",
-        customerName: "Bentwood Chair",
-        productImage: avatar10,
-        productName: "Ashley Silva",
-        amount: "$349.99",
-        orderDate: "31 Oct, 2022",
-        vendor: "Argentina",
-        status: "Pending"
+        purchaseID : "#TB010335",
+        customerName : "Apple Headphone",
+        productImage : avatar9,
+        productName : "Scott Wilson",
+        amount : "$264.37",
+        orderDate : "01 Nov, 2022",
+        vendor : "Jersey",
+        status : "Unpaid"
+    },{
+        purchaseID : "#TB010334",
+        customerName : "Bentwood Chair",
+        productImage : avatar10,
+        productName : "Ashley Silva",
+        amount : "$349.99",
+        orderDate : "31 Oct, 2022",
+        vendor : "Argentina",
+        status : "Pending"
     },
     {
-        purchaseID: "#TB010333",
-        customerName: "Stillbird Helmet",
-        productImage: avatar3,
-        productName: "Stephen Bird",
-        amount: "$80.00",
-        orderDate: "30 Oct, 2022",
-        vendor: "USA",
-        status: "Paid"
+        purchaseID : "#TB010333",
+        customerName : "Stillbird Helmet",
+        productImage : avatar3,
+        productName : "Stephen Bird",
+        amount : "$80.00",
+        orderDate : "30 Oct, 2022",
+        vendor : "USA",
+        status : "Paid"
     },
     {
-        purchaseID: "#TB010332",
-        customerName: "Borosil Paper Cup",
-        productImage: avatar4,
-        productName: "Daniel Gonzalez",
-        amount: "$345.00",
-        orderDate: "29 Oct, 2022",
-        vendor: "Namibia",
-        status: "Unpaid"
+        purchaseID : "#TB010332",
+        customerName : "Borosil Paper Cup",
+        productImage : avatar4,
+        productName : "Daniel Gonzalez",
+        amount : "$345.00",
+        orderDate : "29 Oct, 2022",
+        vendor : "Namibia",
+        status : "Unpaid"
     },
     {
-        purchaseID: "#TB010331",
-        customerName: "Macbook Pro",
-        productImage: avatar2,
-        productName: "Terry White",
-        amount: "$658.00",
-        orderDate: "28 Oct, 2022",
-        vendor: "Brazil",
-        status: "Paid"
+        purchaseID : "#TB010331",
+        customerName : "Macbook Pro",
+        productImage : avatar2,
+        productName : "Terry White",
+        amount : "$658.00",
+        orderDate : "28 Oct, 2022",
+        vendor : "Brazil",
+        status : "Paid"
     }
 ];
 
@@ -135,19 +135,19 @@ const chatmsg = [
 ]
 
 const BestSellingProductsData = [
-    { id: 1, className: "bg-info-subtle rounded py-3", img: productImg1, rating: "4.7", price: "$64.21", productName: "Rockerz 550 Over Ear Bluetooth Headphones" },
-    { id: 2, className: "bg-warning-subtle rounded py-3", img: productImg6, rating: "4.9", price: "$154.78", productName: "Monte Carlo Sweaters" },
-    { id: 3, className: "bg-primary-subtle rounded py-3", img: productImg8, rating: "4.3", price: "$36.97", productName: "Men's Running Shoes Active Grip" },
-    { id: 4, className: "bg-success-subtle rounded py-3", img: productImg5, rating: "4.8", price: "$71.34", productName: "United Colors Of Benetton" }
+    { id: 1, img: productImg1, rating: "4.7", price: "$64.21", productName: "Rockerz 550 Over Ear Bluetooth Headphones" },
+    { id: 2, img: productImg6, rating: "4.9", price: "$154.78", productName: "Monte Carlo Sweaters" },
+    { id: 3, img: productImg8, rating: "4.3", price: "$36.97", productName: "Men's Running Shoes Active Grip" },
+    { id: 4, img: productImg5, rating: "4.8", price: "$71.34", productName: "United Colors Of Benetton" }
 ]
 
 const stockReportData = [
-    { id: 1, ProductId: "#00541", productImg: productImg1, productName: "Rockerz Ear Bluetooth Headphone", date: "16 Aug, 2022", amount: "$658.00", color: "success", status: "In Stock", quantity: "15" },
-    { id: 2, ProductId: "#07484", productImg: productImg5, productName: "United Colors Of Benetton", date: "05 Sep, 2022", amount: "$145.00", color: "warning", status: "Low Stock", quantity: "05" },
-    { id: 3, ProductId: "#01641", productImg: productImg4, productName: "Striped Baseball Cap", date: "28 Sep, 2022", amount: "$215.00", color: "danger", status: "Out of Stock", quantity: "0" },
-    { id: 4, ProductId: "#00065", productImg: productImg3, productName: "350 ml Glass Grocery Container", date: "02 Oct, 2022", amount: "$79.99", color: "success", status: "In Stock", quantity: "37" },
-    { id: 5, ProductId: "#00156", productImg: productImg2, productName: "One Seater Sofa", date: "11 Oct, 2022", amount: "$264.99", color: "success", status: "In Stock", quantity: "23" },
-    { id: 6, ProductId: "#09102", productImg: productImg8, productName: "Men's Running Shoes Active Grip", date: "19 Nov, 2022", amount: "$264.99", color: "warning", status: "Low Stock", quantity: "23" }
+    { id: 1, ProductId: "#00541", productImg: productImg1, productName: "Rockerz Ear Bluetooth Headphone", date: "16 Aug, 2022", amount: "$658.00", status: "In Stock", quantity: "15" },
+    { id: 2, ProductId: "#07484", productImg: productImg5, productName: "United Colors Of Benetton", date: "05 Sep, 2022", amount: "$145.00", status: "Low Stock", quantity: "05" },
+    { id: 3, ProductId: "#01641", productImg: productImg4, productName: "Striped Baseball Cap", date: "28 Sep, 2022", amount: "$215.00", status: "Out of Stock", quantity: "0" },
+    { id: 4, ProductId: "#00065", productImg: productImg3, productName: "350 ml Glass Grocery Container", date: "02 Oct, 2022", amount: "$79.99", status: "In Stock", quantity: "37" },
+    { id: 5, ProductId: "#00156", productImg: productImg2, productName: "One Seater Sofa", date: "11 Oct, 2022", amount: "$264.99", status: "In Stock", quantity: "23" },
+    { id: 6, ProductId: "#09102", productImg: productImg8, productName: "Men's Running Shoes Active Grip", date: "19 Nov, 2022", amount: "$264.99", status: "Low Stock", quantity: "23" }
 ]
 
 const allRevenueChartData = [{

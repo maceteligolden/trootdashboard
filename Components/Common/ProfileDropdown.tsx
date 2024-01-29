@@ -4,16 +4,12 @@ import { Dropdown } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 //import images
 import avatar1 from "../assets/images/users/avatar-1.jpg";
-import { createSelector } from 'reselect';
 
 const ProfileDropdown = () => {
 
-    const selectDashboardData = createSelector(
-        (state: any) => state.Profile,
-        (success) => success
-    );
-    // Inside your component
-    const success = useSelector(selectDashboardData);
+    const { success } = useSelector((state: any) => ({
+        success: state.Profile.success,
+    }));
 
     const [username, setusername] = useState<string>("Admin");
 
@@ -59,6 +55,6 @@ const ProfileDropdown = () => {
             </Dropdown>
         </React.Fragment>
     );
-};
+}
 
 export default ProfileDropdown;

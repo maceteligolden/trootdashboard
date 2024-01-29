@@ -30,7 +30,7 @@
     }
 
     .navbar-menu {
-        background: var(--#{$prefix}topnav-bg);
+        background: $topnav-bg;
         border-right-color: transparent;
         padding: 0 calc(#{$grid-gutter-width} * 0.5);
         box-shadow: $horizontal-menu-box-shadow;
@@ -258,11 +258,11 @@
         .navbar-header {
             .horizontal-logo {
                 .logo-dark {
-                    display: block;
+                    display: none;
                 }
 
                 .logo-light {
-                    display: none;
+                    display: block;
                 }
             }
         }

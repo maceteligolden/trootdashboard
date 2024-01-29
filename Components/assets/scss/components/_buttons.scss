@@ -228,7 +228,7 @@ $value in $theme-colors {
 }
 
 // theme dark
-[data-bs-theme="dark"] {
+[data-layout-mode="dark"] {
 
     .btn-check:focus+.btn-light,
     .btn-check:focus+.btn-outline-light,
@@ -310,15 +310,6 @@ $value in $theme-colors {
         }
     }
 
-    .btn-light,
-    .btn-light:active,
-    .btn-light.active,
-    .btn-light:hover{
-        color: var(--#{$prefix}btn-active-color);
-        background-color: rgba(var(--#{$prefix}light-rgb), 0.75);
-        border-color: rgba(var(--#{$prefix}light-rgb), 0.75);
-    }
-
     // ghost
     .btn-ghost-light {
         color: var(--#{$prefix}dark);
@@ -331,16 +322,16 @@ $value in $theme-colors {
         }
     }
 
-    // .btn-ghost-dark {
-    //     color: var(--#{$prefix}dark);
+    .btn-ghost-dark {
+        color: var(--#{$prefix}dark);
 
-    //     &:hover,
-    //     &:focus,
-    //     &:active {
-    //         color: var(--#{$prefix}dark);
-    //         background-color: rgba(var(--#{$prefix}dark-rgb), 0.1);
-    //     }
-    // }
+        &:hover,
+        &:focus,
+        &:active {
+            color: var(--#{$prefix}dark);
+            background-color: rgba(var(--#{$prefix}dark-rgb), 0.1);
+        }
+    }
 
     // Animation
     .btn-dark.btn-animation {
@@ -424,9 +415,4 @@ $value in $theme-colors {
             display: block;
         }
     }
-}
-
-
-.btn-soft-dark{
-    color: $white !important;
 }

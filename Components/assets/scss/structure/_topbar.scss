@@ -35,7 +35,7 @@
     right: 0;
     left: 0;
     z-index: 1002;
-    background-color: var(--#{$prefix}header-bg);
+    background-color: $header-bg;
     transition: all 0.1s ease-out;
     border-bottom: 1px solid var(--#{$prefix}border-color);
 
@@ -218,7 +218,7 @@
 
 .topbar-user {
     @media (min-width: 768px) {
-        background-color: var(--#{$prefix}topbar-user-bg);
+        background-color: $topbar-user-bg;
     }
 
     .dropdown-menu {
@@ -453,21 +453,5 @@
 
     .horizontal-logo {
         display: none;
-    }
-}
-
-
-[data-bs-theme="light"][data-topbar="dark"]{
-    .navbar-header{
-        .btn{
-            &.header-item{
-                color: $white !important;
-            }
-        }
-    }
-    
-
-    .user-name-sub-text{
-        color: $white !important;
     }
 }

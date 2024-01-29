@@ -45,14 +45,12 @@ import img01 from "@assets/images/sidebar/img-1.jpg";
 import img02 from "@assets/images/sidebar/img-2.jpg";
 import img03 from "@assets/images/sidebar/img-3.jpg";
 import img04 from "@assets/images/sidebar/img-4.jpg";
-import { createSelector } from 'reselect';
 
 const RightSidebar = () => {
     const dispatch: any = useDispatch();
     const router = useRouter();
 
     const [show, setShow] = useState<boolean>(false);
-
     function tog_show() {
         setShow(!show);
         dispatch(changeSidebarTheme("gradient"));
@@ -67,24 +65,6 @@ const RightSidebar = () => {
         }
     });
 
-
-    const selectLayoutState = (state: any) => state.Layout;
-    const selectLayoutProperties = createSelector(
-        selectLayoutState,
-        (layout) => ({
-            layoutType: layout.layoutType,
-            leftSidebarType: layout.leftSidebarType,
-            layoutModeType: layout.layoutModeType,
-            layoutWidthType: layout.layoutWidthType,
-            layoutPositionType: layout.layoutPositionType,
-            topbarThemeType: layout.topbarThemeType,
-            leftsidbarSizeType: layout.leftsidbarSizeType,
-            leftSidebarViewType: layout.leftSidebarViewType,
-            leftSidebarImageType: layout.leftSidebarImageType,
-            preloader: layout.preloader
-        })
-    );
-    // Inside your component
     const {
         layoutType,
         leftSidebarType,
@@ -96,8 +76,18 @@ const RightSidebar = () => {
         leftSidebarViewType,
         leftSidebarImageType,
         preloader
-    } = useSelector(selectLayoutProperties);
-
+    } = useSelector((state: any) => ({
+        layoutType: state.Layout.layoutType,
+        leftSidebarType: state.Layout.leftSidebarType,
+        layoutModeType: state.Layout.layoutModeType,
+        layoutWidthType: state.Layout.layoutWidthType,
+        layoutPositionType: state.Layout.layoutPositionType,
+        topbarThemeType: state.Layout.topbarThemeType,
+        leftsidbarSizeType: state.Layout.leftsidbarSizeType,
+        leftSidebarViewType: state.Layout.leftSidebarViewType,
+        leftSidebarImageType: state.Layout.leftSidebarImageType,
+        preloader: state.Layout.preloader
+    }));
 
     // open offcanvas
     const [open, setOpen] = useState(true);
@@ -345,10 +335,10 @@ const RightSidebar = () => {
                                                     <span className="d-flex gap-1 h-100">
                                                         <span className="flex-shrink-0">
                                                             <span className="d-flex h-100 flex-column gap-1 p-1">
-                                                                <span className="d-block p-1 px-2 bg-dark bg-opacity-10 rounded mb-2"></span>
-                                                                <span className="d-block p-1 px-2 pb-0 bg-dark bg-opacity-10"></span>
-                                                                <span className="d-block p-1 px-2 pb-0 bg-dark bg-opacity-10"></span>
-                                                                <span className="d-block p-1 px-2 pb-0 bg-dark bg-opacity-10"></span>
+                                                                <span className="d-block p-1 px-2 bg-white bg-opacity-10 rounded mb-2"></span>
+                                                                <span className="d-block p-1 px-2 pb-0 bg-white bg-opacity-10"></span>
+                                                                <span className="d-block p-1 px-2 pb-0 bg-white bg-opacity-10"></span>
+                                                                <span className="d-block p-1 px-2 pb-0 bg-white bg-opacity-10"></span>
                                                             </span>
                                                         </span>
                                                         <span className="flex-grow-1">
@@ -567,6 +557,7 @@ const RightSidebar = () => {
 
                                 {layoutType === "vertical" && (
                                     <React.Fragment>
+
                                         <div id="sidebar-size">
                                             <h6 className="mt-4 fw-semibold fs-15">Sidebar Size</h6>
                                             <p className="text-muted fs-13">Choose a size of Sidebar.</p>
@@ -697,6 +688,7 @@ const RightSidebar = () => {
                                                                     dispatch(changeLeftsidebarSizeType(e.target.value));
                                                                 }
                                                             }}
+
                                                         />
                                                         <label className="form-check-label p-0 avatar-md w-100" htmlFor="sidebar-size-small-hover">
                                                             <span className="d-flex gap-1 h-100">
@@ -806,11 +798,11 @@ const RightSidebar = () => {
                                     </React.Fragment>
                                 )}
 
-                                {layoutType !== "vertical" && (                              
+                                {layoutType !== "horizontal" && (
                                     <React.Fragment>
                                         <div id="sidebar-color">
                                             <h6 className="mt-4 fw-semibold fs-15">Sidebar Color</h6>
-                                            <p className="text-muted fs-13">Choose Light or Dark Sidebar Color.</p>
+                                            <p className="text-muted fs-13">Choose Ligth or Dark Sidebar Color.</p>
 
                                             <div className="row">
                                                 <div className="col-4">
@@ -870,10 +862,10 @@ const RightSidebar = () => {
                                                             <span className="d-flex gap-1 h-100">
                                                                 <span className="flex-shrink-0">
                                                                     <span className="bg-primary d-flex h-100 flex-column gap-1 p-1">
-                                                                        <span className="d-block p-1 px-2 pb-0 bg-dark-subtle"></span>
-                                                                        <span className="d-block p-1 px-2 bg-dark-subtle rounded mb-2"></span>
-                                                                        <span className="d-block p-1 px-2 pb-0 bg-dark-subtle"></span>
-                                                                        <span className="d-block p-1 px-2 pb-0 bg-dark-subtle"></span>
+                                                                        <span className="d-block p-1 px-2 bg-light-subtle rounded mb-2"></span>
+                                                                        <span className="d-block p-1 px-2 pb-0 bg-light-subtle"></span>
+                                                                        <span className="d-block p-1 px-2 pb-0 bg-light-subtle"></span>
+                                                                        <span className="d-block p-1 px-2 pb-0 bg-light-subtle"></span>
                                                                     </span>
                                                                 </span>
                                                                 <span className="flex-grow-1">

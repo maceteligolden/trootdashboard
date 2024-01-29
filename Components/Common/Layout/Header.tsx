@@ -13,9 +13,9 @@ import { useDispatch } from 'react-redux';
 import { changeLayoutMode } from 'Components/slices/thunk';
 import { LAYOUT_MODE_TYPES } from '@common/constants/layout';
 
-import logodark from "@assets/images/logo-dark.png";
-import logolight from "@assets/images/logo-light.png";
-import logosm from "@assets/images/logo-sm.png";
+import logodark from "@assets/images/logo-dark.png"
+import logolight from "@assets/images/logo-light.png"
+import logosm from "@assets/images/logo-sm.png"
 import Link from 'next/link';
 
 const Header = () => {
@@ -106,7 +106,7 @@ const Header = () => {
                             {/* My Cart Dropdown */}
                             <MyCartDropdown />
 
-                            {/* FullScreenDropdown */}  
+                            {/* FullScreenDropdown */}
                             <FullScreenDropdown />
 
                             <Dropdown className="topbar-head-dropdown ms-1 header-item">
