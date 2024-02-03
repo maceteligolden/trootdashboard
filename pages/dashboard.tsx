@@ -6,7 +6,7 @@ const Dashboard = () => {
     return (
         <React.Fragment>
             <Head>
-                <title>Dashboard | Hybrix - Admin & Dashboard Template</title>
+                <title>Dashboard | Trootfindr</title>
             </Head>
         </React.Fragment>
     );
