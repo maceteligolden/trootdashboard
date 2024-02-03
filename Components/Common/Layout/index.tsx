@@ -104,8 +104,10 @@ const Layout = ({ children }: any) => {
                     {/* <TopBar /> */}
                     <Header />
                     <Sidebar layoutType={layoutType} />
-                    <div className="main-content">
-                        {children}
+                    <div className="main-content p-5">
+                        <div className="mt-5">
+                            {children}
+                        </div>
                     </div>
                     <Footer />
                 </div>
