@@ -101,14 +101,12 @@ const Layout = ({ children }: any) => {
         <React.Fragment>
             <>
                 <div>
-                    <TopBar />
                     <Header />
                     <Sidebar layoutType={layoutType} />
                     <div className="main-content">
                         {children}
                     </div>
                     <Footer />
-                    <RightSidebar />
                 </div>
             </>
 
