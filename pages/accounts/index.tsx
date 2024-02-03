@@ -2,11 +2,14 @@ import React, { ReactElement } from 'react';
 import Head from 'next/head';
 import Layout from '@common/Layout';
 import Link from 'next/link';
-import { Table } from 'react-bootstrap';
+import { Button, Table } from 'react-bootstrap';
 import Breadcrumb from '@common/Breadcrumb';
 import { IBreadCrumb } from '@common/interfaces';
+import Taskbar from '@common/Taskbar';
+import { useRouter } from 'next/router';
 
 const Accounts = () => {
+    const router = useRouter();
 
     const breadcrumbItems: IBreadCrumb[] = [
         {
@@ -23,6 +26,13 @@ const Accounts = () => {
     return (
         <React.Fragment>
             <Breadcrumb pageName="Accounts" items={breadcrumbItems}/>
+            <Taskbar>
+                <Button variant="primary" className="w-10" onClick={() => {
+                    router.push("/accounts/create-account")
+                }}>
+                    Add Account
+                </Button>
+            </Taskbar>
             <div className="table-responsive">
                 <Table className="table-borderless align-middle table-nowrap mb-0">
                     <thead>

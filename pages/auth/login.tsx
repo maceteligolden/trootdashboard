@@ -1,19 +1,11 @@
-import React, { ReactElement, ReactNode, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import { Alert, Button, Card, Col, Container, Form, Row, Spinner } from 'react-bootstrap';
 import Image from 'next/image';
-import Link from 'next/link';
-
-//Social Media Imports
-import { GoogleLogin } from "react-google-login";
-import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
-
 import { useRouter } from 'next/router';
 import { useSelector, useDispatch } from "react-redux";
-
 import * as Yup from "yup";
 import { useFormik } from "formik";
-
 import { loginUser, socialLogin, resetLoginFlag } from "../../Components/slices/thunk";
 
 //import images
@@ -22,7 +14,7 @@ import authEffect2 from "@assets/images/effect-pattern/auth-effect-2.png";
 import authEffect from "@assets/images/effect-pattern/auth-effect.png";
 import NonAuthLayout from '@common/Layout/NonAuthLayout';
 
-const Login = (props: any) => {
+const Login = () => {
 
     const dispatch: any = useDispatch();
     const router = useRouter();

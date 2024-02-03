@@ -90,30 +90,7 @@ const Navdata = () => {
             id: "accounts",
             label: "Accounts",
             icon: "bi bi-person-circle",
-            link: "/#",
-            click: function (e: any) {
-                e.preventDefault();
-                setIsAccount(!isAccount);
-                setIsCurrentState('Accounts');
-                updateIconSidebar(e);
-            },
-            stateVariables: isAccount,
-            subItems: [
-                {
-                    id: "account",
-                    label: "Manage Accounts",
-                    link: "/accounts",
-                    isChildItem: false,
-                    parentId: "accounts",
-                },
-                {
-                    id: "categories",
-                    label: "Manage Categories",
-                    link: "/accounts/categories",
-                    isChildItem: false,
-                    parentId: "accounts",
-                },
-            ],
+            link: "/accounts",
         },
         {
             id: "articles",
