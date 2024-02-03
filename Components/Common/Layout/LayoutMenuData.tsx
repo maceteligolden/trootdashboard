@@ -90,7 +90,7 @@ const Navdata = () => {
             id: "accounts",
             label: "Accounts",
             icon: "bi bi-person-circle",
-            link: "/accounts",
+            link: "/#",
             click: function (e: any) {
                 e.preventDefault();
                 setIsAccount(!isAccount);
