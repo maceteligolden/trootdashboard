@@ -40,7 +40,7 @@ const Navdata = () => {
             Router.push("/dashboard");
             document.body.classList.add('twocolumn-panel');
         }
-        if (isCurrentState === '') {
+        if (isCurrentState === 'widgets') {
             Router.push("/widgets");
             document.body.classList.add('twocolumn-panel');
         }
@@ -118,7 +118,7 @@ const Navdata = () => {
         {
             id: "articles",
             label: "Articles",
-            icon: "bi bi-journal-medical",
+            icon: "bx bx-news",
             link: "/#",
             click: function (e: any) {
                 e.preventDefault();
