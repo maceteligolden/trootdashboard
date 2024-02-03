@@ -7,7 +7,7 @@ import { Alert, Button, Col, Form, Row } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as Yup from "yup";
 
-const CreateArticle = () => {
+const CreateBlog = () => {
 
     const [passwordtype, setPasswordtype] = useState<boolean>(true)
 
@@ -18,12 +18,12 @@ const CreateArticle = () => {
             link: "/dashboard"
         },
         {
-            label: "Articles",
-            link: "/articles",
+            label: "Blogs",
+            link: "/blogs",
             isLink: true
         },
         {
-            label: "Create Article",
+            label: "Create Blog",
             isLink: false
         }
     ];
@@ -51,7 +51,7 @@ const CreateArticle = () => {
 
     return (
         <React.Fragment>
-            <Breadcrumb pageName="Create Article" items={breadcrumbItems}/>
+            <Breadcrumb pageName="Create Blog" items={breadcrumbItems}/>
             <Row className="px-0">
                 <Col lg={5}>
                     {false && true ? (<Alert variant="danger"> error message goes here </Alert>) : null}
@@ -157,11 +157,11 @@ const CreateArticle = () => {
     );
 }
 
-CreateArticle.getLayout = (page: ReactElement) => {
+CreateBlog.getLayout = (page: ReactElement) => {
     return (
       <Layout>
         <Head>
-                <title>Create Article | Trootfindr</title>
+                <title>Create Blog | Trootfindr</title>
         </Head>
         {page}
       </Layout>
@@ -169,4 +169,4 @@ CreateArticle.getLayout = (page: ReactElement) => {
 };
 
 
-export default CreateArticle;
+export default CreateBlog;
