@@ -3,11 +3,11 @@ import Head from 'next/head';
 import Layout from '@common/Layout';
 import Breadcrumb from '@common/Breadcrumb';
 import { IBreadCrumb } from '@common/interfaces';
-import { Alert, Button, Card, Col, Container, Form, Row } from 'react-bootstrap';
+import { Alert, Button, Col, Form, Row } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as Yup from "yup";
 
-const UpdateArticle = () => {
+const UpdateBlog = () => {
 
     const [passwordtype, setPasswordtype] = useState<boolean>(true)
 
@@ -18,12 +18,12 @@ const UpdateArticle = () => {
             link: "/dashboard"
         },
         {
-            label: "Articles",
-            link: "/articles",
+            label: "Blogs",
+            link: "/blogs",
             isLink: true
         },
         {
-            label: "Update Article",
+            label: "Update Blog",
             isLink: false
         }
     ];
@@ -51,7 +51,7 @@ const UpdateArticle = () => {
 
     return (
         <React.Fragment>
-            <Breadcrumb pageName="Update article" items={breadcrumbItems}/>
+            <Breadcrumb pageName="Update blog" items={breadcrumbItems}/>
             <Row className="px-0">
                 <Col lg={5}>
                     {false && true ? (<Alert variant="danger"> error message goes here </Alert>) : null}
@@ -157,11 +157,11 @@ const UpdateArticle = () => {
     );
 }
 
-UpdateArticle.getLayout = (page: ReactElement) => {
+UpdateBlog.getLayout = (page: ReactElement) => {
     return (
       <Layout>
         <Head>
-                <title>Update Article | Trootfindr</title>
+                <title>Update Blog | Trootfindr</title>
         </Head>
         {page}
       </Layout>
@@ -169,4 +169,4 @@ UpdateArticle.getLayout = (page: ReactElement) => {
 };
 
 
-export default UpdateArticle;
+export default UpdateBlog;
