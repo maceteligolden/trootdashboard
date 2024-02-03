@@ -53,12 +53,12 @@ const TopBar = () => {
                         </Col>
                         <Col xs={6} className="d-none d-lg-block col-md-auto d-none d-lg-block">
                             <div className="d-flex align-items-center justify-content-center gap-3 fs-13 text-white-50">
-                                <div>
-                                    <i className="bi bi-envelope align-middle me-2"></i> support@themesbrand.com
+                                {/* <div>
+                                    <i className="bi bi-envelope align-middle me-2"></i> maceteligolden@gmail.com
                                 </div>
                                 <div>
                                     <i className="bi bi-globe align-middle me-2"></i> www.themesbrand.com
-                                </div>
+                                </div> */}
                             </div>
                         </Col>
                         <Col xs={3} className="col-md-auto">

@@ -101,13 +101,13 @@ const Header = () => {
 
 
                             {/* Browse by Apps Dropdown */}
-                            <BrowseAppsDropdown />
+                            {/* <BrowseAppsDropdown /> */}
 
                             {/* My Cart Dropdown */}
-                            <MyCartDropdown />
+                            {/* <MyCartDropdown /> */}
 
                             {/* FullScreenDropdown */}
-                            <FullScreenDropdown />
+                            {/* <FullScreenDropdown /> */}
 
                             <Dropdown className="topbar-head-dropdown ms-1 header-item">
                                 <Dropdown.Toggle className="btn btn-icon btn-topbar btn-ghost-dark rounded-circle mode-layout arrow-none">
