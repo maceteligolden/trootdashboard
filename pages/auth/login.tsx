@@ -133,7 +133,7 @@ const Login = (props: any) => {
                                                     <div className="text-center text-white-75">
                                                         <p className="mb-0">©
                                                             {new Date().getFullYear()}{" "}
-                                                            Hybrix. Crafted with <i className="mdi mdi-heart text-danger"></i> by Themesbrand
+                                                            Trootfindr
                                                         </p>
                                                     </div>
                                                 </Card.Body>
@@ -145,7 +145,7 @@ const Login = (props: any) => {
                                                 <Card.Body className="px-0 p-sm-5 m-lg-4">
                                                     <div className="text-center mt-2">
                                                         <h5 className="text-primary fs-20">Welcome Back !</h5>
-                                                        <p className="text-muted">Sign in to continue to Hybrix.</p>
+                                                        <p className="text-muted">Sign in to continue to Trootfindr.</p>
                                                     </div>
                                                     {error && error ? (<Alert variant="danger"> {error} </Alert>) : null}
                                                     <div className="p-2 mt-5">
@@ -158,8 +158,8 @@ const Login = (props: any) => {
                                                         >
 
                                                             <div className="mb-3">
-                                                                <Form.Label htmlFor="username" className="form-label">Username</Form.Label>
-                                                                <Form.Control className="form-control" id="username" placeholder="Enter username"
+                                                                <Form.Label htmlFor="username" className="form-label">Email</Form.Label>
+                                                                <Form.Control className="form-control" id="username" placeholder="Enter email"
                                                                     name="email"
                                                                     type="email"
                                                                     onChange={validation.handleChange}
@@ -176,9 +176,7 @@ const Login = (props: any) => {
                                                             </div>
 
                                                             <div className="mb-3">
-                                                                <div className="float-end">
-                                                                    <Link href="/auth/forget-password" className="text-muted">Forgot password?</Link>
-                                                                </div>
+                                                             
                                                                 <Form.Label className="form-label" htmlFor="password-input">Password</Form.Label>
                                                                 <div className="position-relative auth-pass-inputgroup mb-3">
                                                                     <Form.Control type={passwordtype ? "password" : "text"} className="form-control pe-5 password-input" placeholder="Enter password" id="password-input"
@@ -197,10 +195,6 @@ const Login = (props: any) => {
                                                                 </div>
                                                             </div>
 
-                                                            <div className="form-check">
-                                                                <input className="form-check-input" type="checkbox" value="" id="auth-remember-check" />
-                                                                <Form.Label className="form-check-label" htmlFor="auth-remember-check">Remember me</Form.Label>
-                                                            </div>
 
                                                             <div className="mt-4">
                                                                 <Button variant="primary" className="w-100" type="submit" disabled={error || loading ? true : false}>
@@ -209,41 +203,10 @@ const Login = (props: any) => {
                                                                 </Button>
                                                             </div>
 
-                                                            <div className="mt-4 pt-2 text-center">
-                                                                <div className="signin-other-title">
-                                                                    <h5 className="fs-13 mb-4 title">Sign In with</h5>
-                                                                </div>
-                                                                <div className="pt-2 hstack gap-2 justify-content-center">
-
-                                                                    <FacebookLogin
-                                                                        // appId={facebook.APP_ID}
-                                                                        autoLoad={false}
-                                                                        callback={facebookResponse}
-                                                                        render={(renderProps: any) => (
-                                                                            <Button type="button" variant='soft-primary' className="btn-icon" onClick={renderProps.onClick}>
-                                                                                <i className="ri-facebook-fill fs-16" />
-                                                                            </Button>
-                                                                        )}
-                                                                    />
-                                                                    {/* <button type="button" className="btn btn-soft-primary btn-icon"><i className="ri-facebook-fill fs-16"></i></button> */}
-                                                                    {/* <button type="button" className="btn btn-soft-danger btn-icon"><i className="ri-google-fill fs-16"></i></button> */}
-
-                                                                    <GoogleLogin
-                                                                        clientId={"23144678283-oek7ncjmmrgkgmi2i56sc411gp71a8sp.apps.googleusercontent.com"}
-                                                                        render={(renderProps: any) => (
-                                                                            <Button variant='soft-danger' type="button" className="btn-icon" onClick={renderProps.onClick}>
-                                                                                <i className="ri-google-fill fs-16" />
-                                                                            </Button>
-                                                                        )} onSuccess={googleResponse} onFailure={() => { }} />
-                                                                    <Button variant='soft-dark' type="button" className="btn-icon"><i className="ri-github-fill fs-16"></i></Button>
-                                                                    <Button variant='soft-info' type="button" className="btn-icon"><i className="ri-twitter-fill fs-16"></i></Button>
-                                                                </div>
-                                                            </div>
+                                                          
                                                         </Form>
 
-                                                        <div className="text-center mt-5">
-                                                            <p className="mb-0">Don't have an account ? <Link href="/auth/register" className="fw-semibold text-secondary text-decoration-underline"> SignUp</Link> </p>
-                                                        </div>
+                                                     
                                                     </div>
                                                 </Card.Body>
                                             </Card>
