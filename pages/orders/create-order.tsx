@@ -7,7 +7,7 @@ import { Alert, Button, Col, Form, Row } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as Yup from "yup";
 
-const CreateBlog = () => {
+const CreateOrder = () => {
 
     const [passwordtype, setPasswordtype] = useState<boolean>(true)
 
@@ -18,17 +18,12 @@ const CreateBlog = () => {
             link: "/dashboard"
         },
         {
-            label: "Blogs",
-            isLink: true,
-            link: "/blogs"
+            label: "Orders",
+            link: "/orders",
+            isLink: true
         },
         {
-            label: "Categories",
-            link: "/blogs/categories",
-            isLink: true,
-        },
-        {
-            label: "Create Blog Categories",
+            label: "Create Order",
             isLink: false
         }
     ];
@@ -56,7 +51,7 @@ const CreateBlog = () => {
 
     return (
         <React.Fragment>
-            <Breadcrumb pageName="Create Blog Category" items={breadcrumbItems}/>
+            <Breadcrumb pageName="Create Order" items={breadcrumbItems}/>
             <Row className="px-0">
                 <Col lg={5}>
                     {false && true ? (<Alert variant="danger"> error message goes here </Alert>) : null}
@@ -162,11 +157,11 @@ const CreateBlog = () => {
     );
 }
 
-CreateBlog.getLayout = (page: ReactElement) => {
+CreateOrder.getLayout = (page: ReactElement) => {
     return (
       <Layout>
         <Head>
-                <title>Create Blog Category | Trootfindr</title>
+                <title>Create Order | Trootfindr</title>
         </Head>
         {page}
       </Layout>
@@ -174,4 +169,4 @@ CreateBlog.getLayout = (page: ReactElement) => {
 };
 
 
-export default CreateBlog;
+export default CreateOrder;

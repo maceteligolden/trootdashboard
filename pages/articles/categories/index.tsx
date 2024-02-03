@@ -20,7 +20,7 @@ const ArticlesCategories = () => {
         {
             label: "Articles",
             isLink: true,
-            link: "/dashboard/articles"
+            link: "/articles"
         },
         {
             label: "Categories",

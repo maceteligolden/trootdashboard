@@ -8,7 +8,7 @@ import Taskbar from '@common/Taskbar';
 import Breadcrumb from '@common/Breadcrumb';
 import Link from 'next/link';
 
-const ArticlesCategories = () => {
+const Categories = () => {
     const router = useRouter();
 
     const breadcrumbItems: IBreadCrumb[] = [
@@ -18,9 +18,9 @@ const ArticlesCategories = () => {
             link: "/dashboard"
         },
         {
-            label: "Articles",
+            label: "Blogs",
             isLink: true,
-            link: "/dashboard/articles"
+            link: "/blogs"
         },
         {
             label: "Categories",
@@ -30,10 +30,10 @@ const ArticlesCategories = () => {
 
     return (
         <React.Fragment>
-            <Breadcrumb pageName="Articles Category" items={breadcrumbItems}/>
+            <Breadcrumb pageName="Blog Category" items={breadcrumbItems}/>
             <Taskbar>
                 <Button variant="primary" className="w-10" onClick={() => {
-                    router.push("/articles/categories/create-categories")
+                    router.push("/blogs/categories/create-categories")
                 }}>
                     Add Categories
                 </Button>
@@ -110,11 +110,11 @@ const ArticlesCategories = () => {
     );
 }
 
-ArticlesCategories.getLayout = (page: ReactElement) => {
+Categories.getLayout = (page: ReactElement) => {
     return (
       <Layout>
             <Head>
-                <title>ArticlesCategories | Trootfindr</title>
+                <title>BlogCategories | Trootfindr</title>
             </Head>
         {page}
       </Layout>
@@ -122,4 +122,4 @@ ArticlesCategories.getLayout = (page: ReactElement) => {
 };
 
 
-export default ArticlesCategories;
+export default Categories;
