@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Image from 'next/image';
 import Head from 'next/head';
 import { logoutUser } from "../../Components/slices/thunk";
@@ -12,6 +12,7 @@ import authEffect2 from "@assets/images/effect-pattern/auth-effect-2.png";
 import authEffect from "@assets/images/effect-pattern/auth-effect.png";
 import { Button, Card, Col, Container, Row } from 'react-bootstrap';
 import NonAuthLayout from '@common/Layout/NonAuthLayout';
+import { signOut } from 'next-auth/react';
 
 const Logout = () => {
     const dispatch:any = useDispatch();
@@ -21,6 +22,10 @@ const Logout = () => {
         dispatch(logoutUser());
         router.push('/auth/login', undefined, { shallow: true })
     }
+
+    useEffect(() => {
+        signOut({ redirect: false });
+    },[])
     return (
         <React.Fragment>
             <Head>

@@ -4,7 +4,8 @@ import Head from 'next/head';
 import { Provider } from "react-redux";
 import SSRProvider from 'react-bootstrap/SSRProvider';
 import { wrapper } from '../Components/slices';
-
+import { Session } from "next-auth"
+import { SessionProvider } from "next-auth/react"
 import { AppContext, AppInitialProps, AppLayoutProps, AppProps } from 'next/app';
 import type { NextComponentType, NextPage } from 'next';
 
@@ -49,6 +50,7 @@ const MyApp: NextComponentType<AppContext, AppInitialProps, AppLayoutProps> = ({
 
   return (
     <>
+     <SessionProvider session={pageProps.session} refetchInterval={0}>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <title>Hybrix | Next js & Admin Dashboard </title>
@@ -58,6 +60,7 @@ const MyApp: NextComponentType<AppContext, AppInitialProps, AppLayoutProps> = ({
           {getLayout(<Component {...pageProps} />)}
         </Provider>
       </SSRProvider>
+      </SessionProvider>
     </>
   );
 };

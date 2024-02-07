@@ -7,6 +7,8 @@ import { Button, Table } from 'react-bootstrap';
 import Taskbar from '@common/Taskbar';
 import Breadcrumb from '@common/Breadcrumb';
 import Link from 'next/link';
+import { GetServerSideProps } from 'next';
+import { getSession } from 'next-auth/react';
 
 const Categories = () => {
     const router = useRouter();
@@ -121,5 +123,21 @@ Categories.getLayout = (page: ReactElement) => {
     )
 };
 
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    const session = await getSession(context);
+  
+    if (!session) {
+      return {
+        redirect: {
+          destination: '/auth/login', // Redirect to login page if not authenticated
+          permanent: false,
+        },
+      };
+    }
+  
+    return {
+      props: {},
+    };
+  };
 
 export default Categories;

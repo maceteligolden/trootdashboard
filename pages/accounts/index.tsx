@@ -7,6 +7,8 @@ import Breadcrumb from '@common/Breadcrumb';
 import { IBreadCrumb } from '@common/interfaces';
 import Taskbar from '@common/Taskbar';
 import { useRouter } from 'next/router';
+import { getSession } from 'next-auth/react';
+import { GetServerSideProps } from 'next';
 
 const Accounts = () => {
     const router = useRouter();
@@ -115,6 +117,23 @@ Accounts.getLayout = (page: ReactElement) => {
       </Layout>
     )
 };
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    const session = await getSession(context);
+  
+    if (!session) {
+      return {
+        redirect: {
+          destination: '/auth/login', // Redirect to login page if not authenticated
+          permanent: false,
+        },
+      };
+    }
+  
+    return {
+      props: {},
+    };
+  };
 
 
 export default Accounts;

@@ -1,41 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Head from 'next/head';
-import { Alert, Button, Card, Col, Container, Form, Row, Spinner } from 'react-bootstrap';
+import {  Alert, Button, Card, Col, Container, Form, Row, Spinner } from 'react-bootstrap';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useSelector, useDispatch } from "react-redux";
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import { loginUser, socialLogin, resetLoginFlag } from "../../Components/slices/thunk";
-
 //import images
 import logoLightFull from "@assets/images/logo-light-full.png";
 import authEffect2 from "@assets/images/effect-pattern/auth-effect-2.png";
 import authEffect from "@assets/images/effect-pattern/auth-effect.png";
 import NonAuthLayout from '@common/Layout/NonAuthLayout';
+import { GetServerSideProps } from 'next';
+import { getSession, signIn } from 'next-auth/react';
 
 const Login = () => {
 
-    const dispatch: any = useDispatch();
     const router = useRouter();
     const [loading, setLoading] = useState<boolean>(false)
     const [passwordtype, setPasswordtype] = useState<boolean>(true)
     const [userLogin, setUserLogin] = useState<any>([]);
+    const [error, setError] = useState<boolean>(false);
 
-    const { user, error } = useSelector((state: any) => ({
-        user: state.Account.user,
-        error: state.Login.error
-    }));
-
-    useEffect(() => {
-        if (user && user) {
-            console.log("user",user);
-            setUserLogin({
-                email: user.email,
-                password: user.password
-            });
-        }
-    }, [user]);
 
     const validation: any = useFormik({
         // enableReinitialize : use this flag when initial values needs to be changed
@@ -49,52 +34,21 @@ const Login = () => {
             email: Yup.string().required("Please Enter Your Email"),
             password: Yup.string().required("Please Enter Your Password"),
         }),
-        onSubmit: (values) => {
+        onSubmit: async (values) => {
             setLoading(true)
-            dispatch(loginUser(values,router));
+            setError(false)
+            const result = await signIn('credentials', { email: values.email, password: values.password, redirect: false });
+            console.log(result)
+            if(result?.error){
+                setError(true);
+                setLoading(false)
+            }
+            if (result?.url) {
+                router.push('/dashboard'); // Replace with your protected route
+            }
         }
     });
 
-
-    useEffect(() => {
-        setTimeout(() => {
-            dispatch(resetLoginFlag());
-            setLoading(false)
-        }, 3000);
-    }, [dispatch, error]);
-
-    const signIn = (res: any, type: any) => {
-        if (type === "google" && res) {
-            const postData = {
-                name: res.profileObj.name,
-                email: res.profileObj.email,
-                token: res.tokenObj.access_token,
-                idToken: res.tokenId,
-            };
-            dispatch(socialLogin(postData, type));
-        } else if (type === "facebook" && res) {
-            const postData = {
-                name: res.name,
-                email: res.email,
-                token: res.accessToken,
-                idToken: res.tokenId,
-            };
-            dispatch(socialLogin(postData, type));
-        }
-    };
-
-    //handleGoogleLoginResponse
-    const googleResponse = (response: any) => {
-        signIn(response, "google");
-    };
-
-    //handleTwitterLoginResponse
-    // const twitterResponse = e => {}
-
-    //handleFacebookLoginResponse
-    const facebookResponse = (response: any) => {
-        signIn(response, "facebook");
-    };
 
     return (
         <React.Fragment>
@@ -139,7 +93,7 @@ const Login = () => {
                                                         <h5 className="text-primary fs-20">Welcome Back !</h5>
                                                         <p className="text-muted">Sign in to continue to Trootfindr.</p>
                                                     </div>
-                                                    {error && error ? (<Alert variant="danger"> {error} </Alert>) : null}
+                                                    {error && error ? (<Alert variant="danger"> invalid email/password </Alert>) : null}
                                                     <div className="p-2 mt-5">
                                                         <Form
                                                             onSubmit={(e) => {
@@ -189,8 +143,8 @@ const Login = () => {
 
 
                                                             <div className="mt-4">
-                                                                <Button variant="primary" className="w-100" type="submit" disabled={error || loading ? true : false}>
-                                                                    {error || loading ? <Spinner animation="border" size="sm" className="me-2"></Spinner> : null}
+                                                                <Button variant="primary" className="w-100" type="submit" disabled={false}>
+                                                                    {null || loading ? <Spinner animation="border" size="sm" className="me-2"></Spinner> : null}
                                                                     Sign In
                                                                 </Button>
                                                             </div>
@@ -225,5 +179,22 @@ Login.getLayout = function getLayout(page: any) {
       </NonAuthLayout>
     )
 };
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    const session = await getSession(context);
+  
+    if (session) {
+      return {
+        redirect: {
+          destination: '/dashboard', // Redirect to login page if not authenticated
+          permanent: false,
+        },
+      };
+    }
+  
+    return {
+      props: {},
+    };
+  };
 
 export default Login;

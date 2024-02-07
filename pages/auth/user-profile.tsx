@@ -15,6 +15,8 @@ import avatar from "@assets/images/users/avatar-1.jpg";
 // actions
 import { editProfile, resetProfileFlag } from "../../Components/slices/thunk";
 import Layout from "@common/Layout";
+import { GetServerSideProps } from "next";
+import { getSession } from "next-auth/react";
 
 const UserProfile = () => {
   const dispatch: any = useDispatch();
@@ -134,6 +136,23 @@ UserProfile.getLayout = (page: ReactElement) => {
       {page}
     </Layout>
   )
+};
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/auth/login', // Redirect to login page if not authenticated
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
 };
 
 export default UserProfile;

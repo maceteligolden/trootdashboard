@@ -6,6 +6,8 @@ import { IBreadCrumb } from '@common/interfaces';
 import { Alert, Button, Card, Col, Container, Form, Row } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as Yup from "yup";
+import { getSession } from 'next-auth/react';
+import { GetServerSideProps } from 'next';
 
 const UpdateAccounts = () => {
 
@@ -167,6 +169,23 @@ UpdateAccounts.getLayout = (page: ReactElement) => {
       </Layout>
     )
 };
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    const session = await getSession(context);
+  
+    if (!session) {
+      return {
+        redirect: {
+          destination: '/auth/login', // Redirect to login page if not authenticated
+          permanent: false,
+        },
+      };
+    }
+  
+    return {
+      props: {},
+    };
+  };
 
 
 export default UpdateAccounts;

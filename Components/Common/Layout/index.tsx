@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import Header from './Header';
 import Sidebar from './Sidebar';
-import TopBar from './TopBar';
 import { useRouter } from "next/router";
 
 //import actions
@@ -16,28 +15,14 @@ import {
     changeLeftsidebarViewType,
     changeSidebarImageType
 } from "../../slices/thunk";
-import { useProfile } from "@common/UserHooks";
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
 import Footer from './Footer';
-import RightSidebar from '@common/RightSidebar';
+import { useSession } from 'next-auth/react';
 
 const Layout = ({ children }: any) => {
-    const { userProfile } = useProfile();
-    const router = useRouter();
 
-    const redirectLoginFunction = () => {
-        if (typeof window !== 'undefined') { // Check if we're on the client-side
-            if (!userProfile) {
-                router.push('/auth/login');
-            }
-        }
-    };
-
-    useEffect(() => {
-        redirectLoginFunction();
-    }, [])
 
     const dispatch: any = useDispatch();
     const {
@@ -97,6 +82,19 @@ const Layout = ({ children }: any) => {
         leftSidebarViewType,
         leftSidebarImageType,
         dispatch]);
+
+    
+        const router = useRouter();
+        const { data: session, status } = useSession()
+    
+        if (status === "loading") {
+          return <p>Loading...</p>
+        }
+      
+        if (status === "unauthenticated") {
+          router.push('/auth/login');
+        }
+        
     return (
         <React.Fragment>
             <>
