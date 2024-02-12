@@ -8,6 +8,8 @@ import { useFormik } from 'formik';
 import * as Yup from "yup";
 import { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/react';
+import cookie from "cookie";
+import { pageRoutes } from 'lib/constants';
 
 const UpdateArticle = () => {
 
@@ -171,12 +173,12 @@ UpdateArticle.getLayout = (page: ReactElement) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    const session = await getSession(context);
-  
-    if (!session) {
+    const session = cookie.parse(context.req.headers.cookie || '');
+ 
+    if (!session['token']) {
       return {
         redirect: {
-          destination: '/auth/login', // Redirect to login page if not authenticated
+          destination: pageRoutes.auth.login, // Redirect to login page if not authenticated
           permanent: false,
         },
       };

@@ -5,9 +5,13 @@ import Breadcrumb from '@common/Breadcrumb';
 import { IBreadCrumb } from '@common/interfaces';
 import { Alert, Button, Col, Form, Row } from 'react-bootstrap';
 import { useFormik } from 'formik';
-import * as Yup from "yup";
 import { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/react';
+import { pageRoutes } from 'lib/constants';
+import cookie from "cookie";
+import { articleCategoryValidation } from 'lib/validation';
+import { Category, CategoryTypes } from 'lib/models/category.model';
+import TextInput from 'Components/form/TextInput';
 
 const CreateArticle = () => {
 
@@ -17,16 +21,16 @@ const CreateArticle = () => {
         {
             label: "Dashboard",
             isLink: true,
-            link: "/dashboard"
+            link: pageRoutes.dashboard
         },
         {
             label: "Articles",
             isLink: true,
-            link: "/articles"
+            link: pageRoutes.articles.home
         },
         {
             label: "Categories",
-            link: "/articles/categories",
+            link: pageRoutes.articles.category.home,
             isLink: true,
         }, 
         {
@@ -40,19 +44,19 @@ const CreateArticle = () => {
         enableReinitialize: true,
 
         initialValues: {
-            firstname: "",
-            lastname: "",
-            email: '',
-            password: '',
+            description: "",
+            name: ""
         },
-        validationSchema: Yup.object({
-            email: Yup.string().required("Please Enter Your Email"),
-            password: Yup.string().required("Please Enter Your Password"),
-            firstname: Yup.string().required("Please Enter Your Firstname"),
-            lastname: Yup.string().required("Please Enter Your Lastname")
-        }),
-        onSubmit: (values) => {
-         
+        validationSchema: articleCategoryValidation,
+        onSubmit: async (values: Category) => {
+            const response = await fetch("/api/categories/create", {
+                method: "POST",
+            body: JSON.stringify({
+                description: values.description,
+                name: values.name
+            })});
+
+            console.log("response: "+ JSON.stringify(response))
         }
     });
 
@@ -70,86 +74,32 @@ const CreateArticle = () => {
                                 return false;
                             }}
                         >
+                            <TextInput
+                                label={"Name"}
+                                name="name"
+                                placeholder="Enter Name"
+                                onChange={validation.handleChange}
+                                onBlur={validation.handleBlur}
+                                value={validation.values.name}
+                                isInvalid={validation.touched.name && validation.errors.name}
+                                errors={validation.errors.name}
+                            />
 
-                            <div className="mb-3">
-                                <Form.Label htmlFor="firstname" className="form-label">FirstName</Form.Label>
-                                <Form.Control className="form-control" id="firstname" placeholder="Enter firstname"
-                                    name="firstname"
-                                    type="text"
-                                    onChange={validation.handleChange}
-                                    onBlur={validation.handleBlur}
-                                    value={validation.values.firstname || ""}
-                                    isInvalid={
-                                        validation.touched.firstname && validation.errors.firstname ? true : false
-                                    }
-
-                                />
-                                {validation.touched.firstname && validation.errors.firstname ? (
-                                    <Form.Control.Feedback type="invalid">{validation.errors.firstname}</Form.Control.Feedback>
-                                ) : null}
-                            </div>
-
-                            <div className="mb-3">
-                                <Form.Label htmlFor="lastname" className="form-label">LastName</Form.Label>
-                                <Form.Control className="form-control" id="lastname" placeholder="Enter lastname"
-                                    name="lastname"
-                                    type="text"
-                                    onChange={validation.handleChange}
-                                    onBlur={validation.handleBlur}
-                                    value={validation.values.lastname || ""}
-                                    isInvalid={
-                                        validation.touched.lastname && validation.errors.lastname ? true : false
-                                    }
-
-                                />
-                                {validation.touched.lastname && validation.errors.lastname ? (
-                                    <Form.Control.Feedback type="invalid">{validation.errors.lastname}</Form.Control.Feedback>
-                                ) : null}
-                            </div>
-
-                            <div className="mb-3">
-                                <Form.Label htmlFor="email" className="form-label">Email</Form.Label>
-                                <Form.Control className="form-control" id="email" placeholder="Enter email"
-                                    name="email"
-                                    type="email"
-                                    onChange={validation.handleChange}
-                                    onBlur={validation.handleBlur}
-                                    value={validation.values.email || ""}
-                                    isInvalid={
-                                        validation.touched.email && validation.errors.email ? true : false
-                                    }
-
-                                />
-                                {validation.touched.email && validation.errors.email ? (
-                                    <Form.Control.Feedback type="invalid">{validation.errors.email}</Form.Control.Feedback>
-                                ) : null}
-                            </div>
-
-                            <div className="mb-3">
-                            
-                                <Form.Label className="form-label" htmlFor="password-input">Password</Form.Label>
-                                <div className="position-relative auth-pass-inputgroup mb-3">
-                                    <Form.Control type={passwordtype ? "password" : "text"} className="form-control pe-5 password-input" placeholder="Enter password" id="password-input"
-                                        name="password"
-                                        value={validation.values.password || ""}
-                                        onChange={validation.handleChange}
-                                        onBlur={validation.handleBlur}
-                                        isInvalid={
-                                            validation.touched.password && validation.errors.password ? true : false
-                                        }
-                                    />
-                                    {validation.touched.password && validation.errors.password ? (
-                                        <Form.Control.Feedback type="invalid">{validation.errors.password}</Form.Control.Feedback>
-                                    ) : null}
-                                    <Button variant='link' className="position-absolute end-0 top-0 text-decoration-none text-muted password-addon" type="button" id="password-addon" onClick={() => setPasswordtype(!passwordtype)}><i className="ri-eye-fill align-middle"></i></Button>
-                                </div>
-                            </div>
-
+                            <TextInput
+                                label={"Description"}
+                                name="description"
+                                placeholder="Enter Description"
+                                onChange={validation.handleChange}
+                                onBlur={validation.handleBlur}
+                                value={validation.values.description}
+                                isInvalid={validation.touched.description && validation.errors.description}
+                                errors={validation.errors.description}
+                            />
 
                             <div className="mt-4">
                                 <Button variant="primary" className="w-100" type="submit">
                                     {/* {error || loading ? <Spinner animation="border" size="sm" className="me-2"></Spinner> : null} */}
-                                    Create Account
+                                    Create Category
                                 </Button>
                             </div>
 
@@ -176,12 +126,12 @@ CreateArticle.getLayout = (page: ReactElement) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    const session = await getSession(context);
-  
-    if (!session) {
+    const session = cookie.parse(context.req.headers.cookie || '');
+ 
+    if (!session['token']) {
       return {
         redirect: {
-          destination: '/auth/login', // Redirect to login page if not authenticated
+          destination: pageRoutes.auth.login, // Redirect to login page if not authenticated
           permanent: false,
         },
       };

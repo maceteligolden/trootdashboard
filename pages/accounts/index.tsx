@@ -7,8 +7,9 @@ import Breadcrumb from '@common/Breadcrumb';
 import { IBreadCrumb } from '@common/interfaces';
 import Taskbar from '@common/Taskbar';
 import { useRouter } from 'next/router';
-import { getSession } from 'next-auth/react';
+import cookie from "cookie";
 import { GetServerSideProps } from 'next';
+import { pageRoutes } from 'lib/constants';
 
 const Accounts = () => {
     const router = useRouter();
@@ -119,12 +120,12 @@ Accounts.getLayout = (page: ReactElement) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    const session = await getSession(context);
-  
-    if (!session) {
+    const session = cookie.parse(context.req.headers.cookie || '');
+ 
+    if (!session['token']) {
       return {
         redirect: {
-          destination: '/auth/login', // Redirect to login page if not authenticated
+          destination: pageRoutes.auth.login, // Redirect to login page if not authenticated
           permanent: false,
         },
       };

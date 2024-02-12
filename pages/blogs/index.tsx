@@ -7,8 +7,9 @@ import Breadcrumb from '@common/Breadcrumb';
 import Taskbar from '@common/Taskbar';
 import { Button, Table } from 'react-bootstrap';
 import Link from 'next/link';
-import { getSession } from 'next-auth/react';
+import cookie from "cookie";
 import { GetServerSideProps } from 'next';
+import { pageRoutes } from 'lib/constants';
 
 const Blogs = () => {
     const router = useRouter();
@@ -119,12 +120,12 @@ Blogs.getLayout = (page: ReactElement) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    const session = await getSession(context);
-  
-    if (!session) {
+    const session = cookie.parse(context.req.headers.cookie || '');
+ 
+    if (!session['token']) {
       return {
         redirect: {
-          destination: '/auth/login', // Redirect to login page if not authenticated
+          destination: pageRoutes.auth.login, // Redirect to login page if not authenticated
           permanent: false,
         },
       };

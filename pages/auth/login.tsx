@@ -12,6 +12,11 @@ import authEffect from "@assets/images/effect-pattern/auth-effect.png";
 import NonAuthLayout from '@common/Layout/NonAuthLayout';
 import { GetServerSideProps } from 'next';
 import { getSession, signIn } from 'next-auth/react';
+import { httpClient } from 'lib/utils';
+import { getToken } from 'next-auth/jwt';
+import axios from 'axios';
+import cookie from 'cookie';
+import Cookies from 'js-cookie';
 
 const Login = () => {
 
@@ -20,7 +25,6 @@ const Login = () => {
     const [passwordtype, setPasswordtype] = useState<boolean>(true)
     const [userLogin, setUserLogin] = useState<any>([]);
     const [error, setError] = useState<boolean>(false);
-
 
     const validation: any = useFormik({
         // enableReinitialize : use this flag when initial values needs to be changed
@@ -37,15 +41,21 @@ const Login = () => {
         onSubmit: async (values) => {
             setLoading(true)
             setError(false)
-            const result = await signIn('credentials', { email: values.email, password: values.password, redirect: false });
-            console.log(result)
-            if(result?.error){
-                setError(true);
-                setLoading(false)
-            }
-            if (result?.url) {
-                router.push('/dashboard'); // Replace with your protected route
-            }
+            const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL}`;
+
+            axios.post(`${BASE_URL}/auth/login`, {
+                ...values
+            }).then((res)=> {
+                const TOKEN = res.data.token;
+
+                Cookies.set('token', TOKEN);
+
+                router.push('/dashboard');
+            }).catch((err)=> {
+               setError(true);
+               setLoading(false);
+            });
+
         }
     });
 
@@ -181,9 +191,9 @@ Login.getLayout = function getLayout(page: any) {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    const session = await getSession(context);
+    const session = cookie.parse(context.req.headers.cookie || '');
   
-    if (session) {
+    if (session['token']) {
       return {
         redirect: {
           destination: '/dashboard', // Redirect to login page if not authenticated

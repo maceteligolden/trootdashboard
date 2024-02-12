@@ -1,6 +1,7 @@
 import React, { useState, useEffect, ReactElement } from "react";
 import Image from "next/image";
 import Head from "next/head";
+import cookie from "cookie";
 import { Container, Row, Col, Card, Alert, Button, Form } from "react-bootstrap";
 
 // Formik Validation
@@ -17,6 +18,7 @@ import { editProfile, resetProfileFlag } from "../../Components/slices/thunk";
 import Layout from "@common/Layout";
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
+import { pageRoutes } from "lib/constants";
 
 const UserProfile = () => {
   const dispatch: any = useDispatch();
@@ -139,12 +141,12 @@ UserProfile.getLayout = (page: ReactElement) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getSession(context);
-
-  if (!session) {
+  const session = cookie.parse(context.req.headers.cookie || '');
+ 
+  if (!session['token']) {
     return {
       redirect: {
-        destination: '/auth/login', // Redirect to login page if not authenticated
+        destination: pageRoutes.auth.login, // Redirect to login page if not authenticated
         permanent: false,
       },
     };
