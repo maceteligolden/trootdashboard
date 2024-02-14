@@ -6,14 +6,26 @@ import { IBreadCrumb } from '@common/interfaces';
 import { Alert, Button, Col, Form, Row } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as Yup from "yup";
-import { GetServerSideProps } from 'next';
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import cookie from "cookie";
 import { pageRoutes } from 'lib/constants';
+import { Blog } from 'lib/models';
+import { getBlog, updateBlog } from 'lib/services/blog.service';
+import TextInput from 'Components/form/TextInput';
+import { useRouter } from 'next/router';
+import { getCategory } from 'lib/services/category.service';
+import { Category, CategoryTypes } from 'lib/models/category.model';
 
 
-const UpdateBlog = () => {
+const UpdateBlog = ({
+    blogCategories,
+    blogDetail
+  }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 
-    const [passwordtype, setPasswordtype] = useState<boolean>(true)
+    const router = useRouter();
+    const [isError, setError] = useState<boolean>(false);
+    const [isSuccess, setSuccess] = useState<boolean>(false);
+
 
     const breadcrumbItems: IBreadCrumb[] = [
         {
@@ -37,19 +49,28 @@ const UpdateBlog = () => {
         enableReinitialize: true,
 
         initialValues: {
-            firstname: "",
-            lastname: "",
-            email: '',
-            password: '',
+            title: blogDetail.title || "",
+            content: blogDetail.content || "",
+            category: blogDetail.category || ""
         },
         validationSchema: Yup.object({
-            email: Yup.string().required("Please Enter Your Email"),
-            password: Yup.string().required("Please Enter Your Password"),
-            firstname: Yup.string().required("Please Enter Your Firstname"),
-            lastname: Yup.string().required("Please Enter Your Lastname")
+            title: Yup.string().required("Please Enter Your Blog Title"),
+            content: Yup.string().required("Please Enter Your Blog Content"),
+            category: Yup.string().required("Please Enter Your Category")
         }),
-        onSubmit: (values) => {
-         
+        onSubmit: async (values: Blog) => {
+            try{
+                setSuccess(false);
+                setError(false)
+
+                const stringId = router.query.id.toString();
+
+                await updateBlog(stringId, values);
+                setSuccess(true);
+
+            } catch(err){
+                setError(true);
+            }
         }
     });
 
@@ -58,7 +79,8 @@ const UpdateBlog = () => {
             <Breadcrumb pageName="Update blog" items={breadcrumbItems}/>
             <Row className="px-0">
                 <Col lg={5}>
-                    {false && true ? (<Alert variant="danger"> error message goes here </Alert>) : null}
+                    {isError && isError ? (<Alert variant="danger"> Blog name already taken </Alert>) : null}
+                    {isSuccess && isSuccess ? (<Alert variant="success"> Blog updated </Alert>) : null}
                     <div className=" mt-5">
                         <Form
                             onSubmit={(e) => {
@@ -67,86 +89,54 @@ const UpdateBlog = () => {
                                 return false;
                             }}
                         >
-
                             <div className="mb-3">
-                                <Form.Label htmlFor="firstname" className="form-label">FirstName</Form.Label>
-                                <Form.Control className="form-control" id="firstname" placeholder="Enter firstname"
-                                    name="firstname"
-                                    type="text"
-                                    onChange={validation.handleChange}
-                                    onBlur={validation.handleBlur}
-                                    value={validation.values.firstname || ""}
-                                    isInvalid={
-                                        validation.touched.firstname && validation.errors.firstname ? true : false
-                                    }
-
-                                />
-                                {validation.touched.firstname && validation.errors.firstname ? (
-                                    <Form.Control.Feedback type="invalid">{validation.errors.firstname}</Form.Control.Feedback>
+                                <Form.Label htmlFor="firstname" className="form-label">Category</Form.Label>
+                                <Form.Select
+                                     name="category"
+                                     value={validation.values.category}
+                                     onChange={validation.handleChange}
+                                     onBlur={validation.handleBlur}
+                                >
+                                    <option>Select Category</option>
+                                    { blogCategories && blogCategories.map((category: Category, index: number) => {
+                                        return (
+                                            <>
+                                                <option value={category._id} key={index}>{category.name}</option>
+                                            </>
+                                        )
+                                    })}
+                                </Form.Select>
+                                {validation.touched.category && validation.errors.category ? (
+                                    <Form.Control.Feedback type="invalid">{validation.errors.category}</Form.Control.Feedback>
                                 ) : null}
                             </div>
+                            <TextInput
+                                label={"Title"}
+                                name="title"
+                                placeholder="Enter Title"
+                                onChange={validation.handleChange}
+                                onBlur={validation.handleBlur}
+                                value={validation.values.title}
+                                isInvalid={validation.touched.title && validation.errors.title}
+                                errors={validation.errors.title}
+                            />
 
-                            <div className="mb-3">
-                                <Form.Label htmlFor="lastname" className="form-label">LastName</Form.Label>
-                                <Form.Control className="form-control" id="lastname" placeholder="Enter lastname"
-                                    name="lastname"
-                                    type="text"
-                                    onChange={validation.handleChange}
-                                    onBlur={validation.handleBlur}
-                                    value={validation.values.lastname || ""}
-                                    isInvalid={
-                                        validation.touched.lastname && validation.errors.lastname ? true : false
-                                    }
-
-                                />
-                                {validation.touched.lastname && validation.errors.lastname ? (
-                                    <Form.Control.Feedback type="invalid">{validation.errors.lastname}</Form.Control.Feedback>
-                                ) : null}
-                            </div>
-
-                            <div className="mb-3">
-                                <Form.Label htmlFor="email" className="form-label">Email</Form.Label>
-                                <Form.Control className="form-control" id="email" placeholder="Enter email"
-                                    name="email"
-                                    type="email"
-                                    onChange={validation.handleChange}
-                                    onBlur={validation.handleBlur}
-                                    value={validation.values.email || ""}
-                                    isInvalid={
-                                        validation.touched.email && validation.errors.email ? true : false
-                                    }
-
-                                />
-                                {validation.touched.email && validation.errors.email ? (
-                                    <Form.Control.Feedback type="invalid">{validation.errors.email}</Form.Control.Feedback>
-                                ) : null}
-                            </div>
-
-                            <div className="mb-3">
-                            
-                                <Form.Label className="form-label" htmlFor="password-input">Password</Form.Label>
-                                <div className="position-relative auth-pass-inputgroup mb-3">
-                                    <Form.Control type={passwordtype ? "password" : "text"} className="form-control pe-5 password-input" placeholder="Enter password" id="password-input"
-                                        name="password"
-                                        value={validation.values.password || ""}
-                                        onChange={validation.handleChange}
-                                        onBlur={validation.handleBlur}
-                                        isInvalid={
-                                            validation.touched.password && validation.errors.password ? true : false
-                                        }
-                                    />
-                                    {validation.touched.password && validation.errors.password ? (
-                                        <Form.Control.Feedback type="invalid">{validation.errors.password}</Form.Control.Feedback>
-                                    ) : null}
-                                    <Button variant='link' className="position-absolute end-0 top-0 text-decoration-none text-muted password-addon" type="button" id="password-addon" onClick={() => setPasswordtype(!passwordtype)}><i className="ri-eye-fill align-middle"></i></Button>
-                                </div>
-                            </div>
+                            <TextInput
+                                label={"Content"}
+                                name="content"
+                                placeholder="Enter Content"
+                                onChange={validation.handleChange}
+                                onBlur={validation.handleBlur}
+                                value={validation.values.content}
+                                isInvalid={validation.touched.content && validation.errors.content}
+                                errors={validation.errors.content}
+                            />
 
 
                             <div className="mt-4">
                                 <Button variant="primary" className="w-100" type="submit">
                                     {/* {error || loading ? <Spinner animation="border" size="sm" className="me-2"></Spinner> : null} */}
-                                    Create Account
+                                    Create Blog
                                 </Button>
                             </div>
 
@@ -174,7 +164,8 @@ UpdateBlog.getLayout = (page: ReactElement) => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const session = cookie.parse(context.req.headers.cookie || '');
- 
+    const blogCategories = await getCategory(CategoryTypes.BLOG);
+    const blogDetail = await getBlog(context.query.id.toString());
     if (!session['token']) {
       return {
         redirect: {
@@ -185,7 +176,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
   
     return {
-      props: {},
+      props: {
+        blogCategories,
+        blogDetail
+      },
     };
   };
   
