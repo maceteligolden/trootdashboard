@@ -12,8 +12,7 @@ import authEffect2 from "@assets/images/effect-pattern/auth-effect-2.png";
 import authEffect from "@assets/images/effect-pattern/auth-effect.png";
 import { Button, Card, Col, Container, Row } from 'react-bootstrap';
 import NonAuthLayout from '@common/Layout/NonAuthLayout';
-import { signOut } from 'next-auth/react';
-import Cookie from "cookies";
+import Cookie from "js-cookie";
 
 const Logout = () => {
     const dispatch:any = useDispatch();

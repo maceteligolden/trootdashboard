@@ -6,16 +6,18 @@ import { IBreadCrumb } from '@common/interfaces';
 import { Alert, Button, Col, Form, Row } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import { GetServerSideProps } from 'next';
-import { getSession } from 'next-auth/react';
 import { pageRoutes } from 'lib/constants';
 import cookie from "cookie";
 import { articleCategoryValidation } from 'lib/validation';
 import { Category, CategoryTypes } from 'lib/models/category.model';
 import TextInput from 'Components/form/TextInput';
+import { createCategory } from 'lib/services/category.service';
+
 
 const CreateArticle = () => {
 
-    const [passwordtype, setPasswordtype] = useState<boolean>(true)
+    const [isError, setError] = useState<boolean>(false);
+    const [isSuccess, setSuccess] = useState<boolean>(false);
 
     const breadcrumbItems: IBreadCrumb[] = [
         {
@@ -40,23 +42,25 @@ const CreateArticle = () => {
     ];
 
     const validation: any = useFormik({
-        // enableReinitialize : use this flag when initial values needs to be changed
-        enableReinitialize: true,
-
         initialValues: {
             description: "",
             name: ""
         },
         validationSchema: articleCategoryValidation,
-        onSubmit: async (values: Category) => {
-            const response = await fetch("/api/categories/create", {
-                method: "POST",
-            body: JSON.stringify({
-                description: values.description,
-                name: values.name
-            })});
+        onSubmit: async (values: Category, {resetForm}) => {
+            try{
+                setSuccess(false);
+                setError(false)
+                // Use the user's token for a server-side request
+                await createCategory(values.description, values.name, CategoryTypes.ARTICLE);
 
-            console.log("response: "+ JSON.stringify(response))
+                resetForm({values: {}});
+
+                setSuccess(true);
+
+            } catch(err){
+                setError(true);
+            }
         }
     });
 
@@ -65,7 +69,8 @@ const CreateArticle = () => {
             <Breadcrumb pageName="Create Article Category" items={breadcrumbItems}/>
             <Row className="px-0">
                 <Col lg={5}>
-                    {false && true ? (<Alert variant="danger"> error message goes here </Alert>) : null}
+                    {isError && isError ? (<Alert variant="danger"> Category name already taken </Alert>) : null}
+                    {isSuccess && isSuccess ? (<Alert variant="success"> New category added </Alert>) : null}
                     <div className=" mt-5">
                         <Form
                             onSubmit={(e) => {

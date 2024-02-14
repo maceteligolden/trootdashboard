@@ -49,7 +49,9 @@ const Login = () => {
                 const TOKEN = res.data.token;
 
                 Cookies.set('token', TOKEN);
-
+         
+                httpClient.defaults.headers.common.Authorization = `Bearer ${TOKEN}`;
+                
                 router.push('/dashboard');
             }).catch((err)=> {
                setError(true);

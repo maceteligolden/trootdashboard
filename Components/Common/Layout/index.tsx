@@ -84,16 +84,16 @@ const Layout = ({ children }: any) => {
         dispatch]);
 
     
-        const router = useRouter();
-        const { data: session, status } = useSession()
+        // const router = useRouter();
+        // const { data: session, status } = useSession()
     
-        if (status === "loading") {
-          return <p>Loading...</p>
-        }
+        // if (status === "loading") {
+        //   return <p>Loading...</p>
+        // }
       
-        if (status === "unauthenticated") {
-          router.push('/auth/login');
-        }
+        // if (status === "unauthenticated") {
+        //   router.push('/auth/login');
+        // }
         
     return (
         <React.Fragment>

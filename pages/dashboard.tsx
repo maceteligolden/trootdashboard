@@ -2,14 +2,19 @@ import React, { ReactElement } from 'react';
 import Head from 'next/head';
 import Layout from '@common/Layout';
 import { GetServerSideProps } from 'next';
-import cookie from "cookie"
+import cookie from "cookie";
+import Cookies from "js-cookie";
 
 const Dashboard = () => {
+  const token = Cookies.get('token');
+
+
     return (
         <React.Fragment>
             <Head>
                 <title>Dashboard | Trootfindr</title>
             </Head>
+           
         </React.Fragment>
     );
 }
@@ -24,7 +29,7 @@ Dashboard.getLayout = (page: ReactElement) => {
 
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = cookie.parse(context.req.headers.cookie || '');;
+  const session = cookie.parse(context.req.headers.cookie || '');
  
   if (!session['token']) {
     return {

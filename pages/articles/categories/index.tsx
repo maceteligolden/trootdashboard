@@ -127,7 +127,7 @@ ArticlesCategories.getLayout = (page: ReactElement) => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const session = cookie.parse(context.req.headers.cookie || '');
  
-    if (!session['token']) {
+    if (session['token'] === '') {
       return {
         redirect: {
           destination: pageRoutes.auth.login, // Redirect to login page if not authenticated

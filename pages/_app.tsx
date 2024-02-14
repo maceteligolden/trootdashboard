@@ -29,6 +29,7 @@ import type { NextComponentType, NextPage } from 'next';
 
 // Fake backend
 import fakeBackend from "Components/helpers/AuthType/fakeBackend";
+import { wrapperToolkit } from "lib/statemanagement/store";
 
 // Activating fake backend
 fakeBackend();
@@ -53,7 +54,6 @@ const MyApp: NextComponentType<AppContext, AppInitialProps, AppLayoutProps> = ({
      <SessionProvider session={pageProps.session} refetchInterval={0}>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <title>Hybrix | Next js & Admin Dashboard </title>
       </Head>
       <SSRProvider>
         <Provider store={store}>
