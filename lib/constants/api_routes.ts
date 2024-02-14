@@ -1,5 +1,6 @@
 export const apiRoutes = {
     categories: {
-        create: '/category/create'
+        create: '/category/create',
+        all: '/category'
     }
 }
