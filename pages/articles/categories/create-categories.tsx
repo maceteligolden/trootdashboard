@@ -51,7 +51,7 @@ const CreateArticle = () => {
             try{
                 setSuccess(false);
                 setError(false)
-                // Use the user's token for a server-side request
+
                 await createCategory(values.description, values.name, CategoryTypes.ARTICLE);
 
                 resetForm({values: {}});
