@@ -1,23 +1,35 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useState } from 'react';
 import Head from 'next/head';
 import Layout from '@common/Layout';
 import { IBreadCrumb } from '@common/interfaces';
 import { useRouter } from 'next/router';
-import { Button, Table } from 'react-bootstrap';
+import { Alert, Button, Table } from 'react-bootstrap';
 import Taskbar from '@common/Taskbar';
 import Breadcrumb from '@common/Breadcrumb';
 import Link from 'next/link';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import cookie from "cookie";
 import { pageRoutes } from 'lib/constants';
-import { getCategory } from 'lib/services/category.service';
+import { deleteCategory, getCategory } from 'lib/services/category.service';
 import { Category, CategoryTypes } from 'lib/models/category.model';
 import { formatDate } from 'lib/utils/formatDate';
+import DeleteModal from '@common/modals/DeleteModal';
 
 const ArticlesCategories = ({
     articleCategories
   }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     const router = useRouter();
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [ isDeleted, setIsDeleted] = useState<boolean>(false);
+    const [ selectedId, setSelectedId] = useState<string>("");
+    const [ selectedName, setSelectedName ] = useState<string>("");
+
+    const handleClose = () => setShowDeleteModal(false);
+    const handleShow = (id: string, name: string) => {
+        setSelectedId(id);
+        setSelectedName(name);
+        setShowDeleteModal(true);
+    }
 
     const breadcrumbItems: IBreadCrumb[] = [
         {
@@ -36,11 +48,25 @@ const ArticlesCategories = ({
         }
     ]
 
-    console.log("category: " + JSON.stringify(articleCategories));
+   const handleDelete = async () => {
+    try{
+        setIsDeleted(false);
+        handleClose();
+        await deleteCategory(selectedId);
+
+        setIsDeleted(true);
+
+        router.reload();
+    } catch(err){
+        
+    }
+   }
 
     return (
         <React.Fragment>
+           
             <Breadcrumb pageName="Articles Category" items={breadcrumbItems}/>
+            {isDeleted && isDeleted? (<Alert variant="danger"> Successfully deleted category </Alert>) : null}
             <Taskbar>
                 <Button variant="primary" className="w-10" onClick={() => {
                     router.push("/articles/categories/create-categories")
@@ -48,7 +74,9 @@ const ArticlesCategories = ({
                     Add Categories
                 </Button>
             </Taskbar>
+
             <div className="table-responsive">
+       
                 <Table className="table-borderless align-middle table-nowrap mb-0">
                     <thead>
                         <tr>
@@ -70,15 +98,23 @@ const ArticlesCategories = ({
                                         <td>{formatDate(category.updated_at)}</td>
                                         <td>
                                             <div className="hstack gap-3 fs-15">
-                                                <Link href="#" className="link-primary"><i className="ri-settings-4-line"></i></Link>
-                                                <Link href="#" className="link-danger"><i className="ri-delete-bin-5-line"></i></Link>
+                                                <Link href={`/articles/categories/update-categories?categoryId=${category._id}&&name=${category.name}&&description=${category.description}`}><i className="ri-edit-line link-primary"></i></Link>
+                                                <i className="ri-delete-bin-5-line link-danger" onClick={() => handleShow(category._id, category.name)}></i>
                                             </div>
                                         </td>
                                     </tr>
+
+                                   
                                 </>
                             )})}
                     </tbody>
                 </Table>
+                <DeleteModal 
+                    item={selectedName} 
+                    onDelete={handleDelete} 
+                    onClose={handleClose} 
+                    status={showDeleteModal}
+                />
             </div>
         </React.Fragment>
     );

@@ -18,6 +18,20 @@ const createCategory = async (description: string, name: string, type: CategoryT
     return response
 }
 
+const updateCategory = async (id: string, description: string, name: string) => {
+    const token = Cookies.get("token");
+    const response = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}${apiRoutes.categories.all}/${id}`, {
+        description,
+        name
+    },{
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    return response
+}
+
 const getCategory = async (type: CategoryTypes) => {
     const token = Cookies.get("token");
     const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}${apiRoutes.categories.all}/${type}`,{
@@ -29,7 +43,20 @@ const getCategory = async (type: CategoryTypes) => {
     return response
 }
 
+const deleteCategory = async (id: string) => {
+    const token = Cookies.get("token");
+    const response = await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}${apiRoutes.categories.all}/${id}`,{
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    return response
+}
+
 export {
     createCategory,
-    getCategory
+    getCategory,
+    deleteCategory,
+    updateCategory
 }
