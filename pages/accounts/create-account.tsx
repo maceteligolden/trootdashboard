@@ -9,10 +9,14 @@ import * as Yup from "yup";
 import { GetServerSideProps } from 'next';
 import cookie from "cookie";
 import { pageRoutes } from 'lib/constants';
+import { Account } from 'lib/models';
+import { createAccount } from 'lib/services/account.service';
 
 const CreateAccounts = () => {
 
-    const [passwordtype, setPasswordtype] = useState<boolean>(true)
+    const [passwordtype, setPasswordtype] = useState<boolean>(true);
+    const [isError, setError] = useState<boolean>(false);
+    const [isSuccess, setSuccess] = useState<boolean>(false);
 
     const breadcrumbItems: IBreadCrumb[] = [
         {
@@ -47,8 +51,19 @@ const CreateAccounts = () => {
             firstname: Yup.string().required("Please Enter Your Firstname"),
             lastname: Yup.string().required("Please Enter Your Lastname")
         }),
-        onSubmit: (values) => {
-         
+        onSubmit: async (values: Account, {resetForm}) => {
+            try{
+                setSuccess(false);
+                setError(false)
+              
+                await createAccount(values);
+
+                resetForm({values: {}});
+
+                setSuccess(true);
+            } catch(err){
+                setError(true);
+            }
         }
     });
 
@@ -57,7 +72,8 @@ const CreateAccounts = () => {
             <Breadcrumb pageName="Create Account" items={breadcrumbItems}/>
             <Row className="px-0">
                 <Col lg={5}>
-                    {false && true ? (<Alert variant="danger"> error message goes here </Alert>) : null}
+                {isError && isError ? (<Alert variant="danger"> email already taken </Alert>) : null}
+                    {isSuccess && isSuccess ? (<Alert variant="success"> New Account added </Alert>) : null}
                     <div className=" mt-5">
                         <Form
                             onSubmit={(e) => {

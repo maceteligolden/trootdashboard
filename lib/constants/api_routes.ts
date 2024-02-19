@@ -5,6 +5,9 @@ export const apiRoutes = {
     },
     blogs: {
         create: "/blogs/create",
-
+    },
+    accounts: {
+        create: "/accounts/create",
+        all: "/accounts"
     }
 }

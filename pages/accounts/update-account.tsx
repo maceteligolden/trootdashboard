@@ -7,12 +7,19 @@ import { Alert, Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
 import { useFormik } from 'formik';
 import * as Yup from "yup";
 import cookie from "cookie";
-import { GetServerSideProps } from 'next';
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { pageRoutes } from 'lib/constants';
+import { Account } from 'lib/models';
+import { getAccount, updateAccount } from 'lib/services/account.service';
+import { useRouter } from 'next/router';
 
-const UpdateAccounts = () => {
-
-    const [passwordtype, setPasswordtype] = useState<boolean>(true)
+const UpdateAccounts = ({
+    accountDetail
+  }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    const router = useRouter();
+    const [passwordtype, setPasswordtype] = useState<boolean>(true);
+    const [isError, setError] = useState<boolean>(false);
+    const [isSuccess, setSuccess] = useState<boolean>(false);
 
     const breadcrumbItems: IBreadCrumb[] = [
         {
@@ -36,19 +43,28 @@ const UpdateAccounts = () => {
         enableReinitialize: true,
 
         initialValues: {
-            firstname: "",
-            lastname: "",
-            email: '',
-            password: '',
+            firstname: accountDetail.firstname || "",
+            lastname: accountDetail.lastname || "",
+            email: accountDetail.email || '',
         },
         validationSchema: Yup.object({
             email: Yup.string().required("Please Enter Your Email"),
-            password: Yup.string().required("Please Enter Your Password"),
             firstname: Yup.string().required("Please Enter Your Firstname"),
             lastname: Yup.string().required("Please Enter Your Lastname")
         }),
-        onSubmit: (values) => {
-         
+        onSubmit: async (values: Account) => {
+            try{
+                setSuccess(false);
+                setError(false)
+
+                const stringId = router.query.id.toString();
+
+                await updateAccount(stringId, values);
+                setSuccess(true);
+
+            } catch(err){
+                setError(true);
+            }
         }
     });
 
@@ -57,7 +73,8 @@ const UpdateAccounts = () => {
             <Breadcrumb pageName="Create Account" items={breadcrumbItems}/>
             <Row className="px-0">
                 <Col lg={5}>
-                    {false && true ? (<Alert variant="danger"> error message goes here </Alert>) : null}
+                {isError && isError ? (<Alert variant="danger"> Email already taken </Alert>) : null}
+                    {isSuccess && isSuccess ? (<Alert variant="success"> Account updated </Alert>) : null}
                     <div className=" mt-5">
                         <Form
                             onSubmit={(e) => {
@@ -121,31 +138,10 @@ const UpdateAccounts = () => {
                                 ) : null}
                             </div>
 
-                            <div className="mb-3">
-                            
-                                <Form.Label className="form-label" htmlFor="password-input">Password</Form.Label>
-                                <div className="position-relative auth-pass-inputgroup mb-3">
-                                    <Form.Control type={passwordtype ? "password" : "text"} className="form-control pe-5 password-input" placeholder="Enter password" id="password-input"
-                                        name="password"
-                                        value={validation.values.password || ""}
-                                        onChange={validation.handleChange}
-                                        onBlur={validation.handleBlur}
-                                        isInvalid={
-                                            validation.touched.password && validation.errors.password ? true : false
-                                        }
-                                    />
-                                    {validation.touched.password && validation.errors.password ? (
-                                        <Form.Control.Feedback type="invalid">{validation.errors.password}</Form.Control.Feedback>
-                                    ) : null}
-                                    <Button variant='link' className="position-absolute end-0 top-0 text-decoration-none text-muted password-addon" type="button" id="password-addon" onClick={() => setPasswordtype(!passwordtype)}><i className="ri-eye-fill align-middle"></i></Button>
-                                </div>
-                            </div>
-
-
                             <div className="mt-4">
                                 <Button variant="primary" className="w-100" type="submit">
                                     {/* {error || loading ? <Spinner animation="border" size="sm" className="me-2"></Spinner> : null} */}
-                                    Create Account
+                                    Update Account
                                 </Button>
                             </div>
 
@@ -173,7 +169,7 @@ UpdateAccounts.getLayout = (page: ReactElement) => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const session = cookie.parse(context.req.headers.cookie || '');
- 
+    const accountDetail = await getAccount(context.query.id.toString());
     if (!session['token']) {
       return {
         redirect: {
@@ -184,7 +180,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
   
     return {
-      props: {},
+      props: {accountDetail},
     };
   };
 

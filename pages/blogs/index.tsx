@@ -55,7 +55,7 @@ const Blogs = ({
         } catch(err){
             
         }
-       }
+    }
 
     return (
         <React.Fragment>
