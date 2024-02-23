@@ -49,6 +49,7 @@ const CreateArticle = ({
             title: "",
             description: "",
             category: "",
+            amount: "",
             payment_model: "",
             thumbnail: null,
             article: null
@@ -56,6 +57,7 @@ const CreateArticle = ({
         validationSchema: Yup.object({
             title: Yup.string().required("Please Enter Your Title"),
             description: Yup.string().required("Please Enter Your Description"),
+            amount: Yup.string(),
             category: Yup.string().required("Please Enter Your Category"),
             payment_model: Yup.string().required("Please Enter Your Payment Model"),
             thumbnail: Yup.mixed().required("Please Enter Your Thumbnail"),
@@ -63,7 +65,7 @@ const CreateArticle = ({
         }),
         onSubmit: async (values: any, {resetForm}) => {
             try{
-                console.log("hello " +JSON.stringify(values.thumbnail))
+                console.log("hello " +JSON.stringify(values))
                 setSuccess(false);
                 setError(false)
               
@@ -73,6 +75,9 @@ const CreateArticle = ({
                 formData.set('payment_model', values.payment_model);
                 formData.append('thumbnail', selectedThumbnailFile);
                 formData.append('article', selectedArticleFile);
+                if(values.amount) {
+                    formData.set('amount', values.amount.toString())
+                }
                 await createArticle(formData);
 
                 resetForm({values: {}});
@@ -142,6 +147,30 @@ const CreateArticle = ({
                                     <Form.Control.Feedback type="invalid">{validation.errors.payment_model}</Form.Control.Feedback>
                                 ) : null}
                             </div>
+
+                            {
+                                (validation.values.payment_model === PaymentModel.PREMIUM) && (
+                                    <>
+                                        <div className="mb-3">
+                                            <Form.Label htmlFor="amount" className="form-label">Amount</Form.Label>
+                                            <Form.Control className="form-control" id="title" placeholder="Enter amount"
+                                                name="amount"
+                                                type="number"
+                                                onChange={validation.handleChange}
+                                                onBlur={validation.handleBlur}
+                                                value={validation.values.amount || ""}
+                                                isInvalid={
+                                                    validation.touched.amount && validation.errors.amount ? true : false
+                                                }
+
+                                            />
+                                            {validation.touched.amount && validation.errors.amount ? (
+                                                <Form.Control.Feedback type="invalid">{validation.errors.amount}</Form.Control.Feedback>
+                                            ) : null}
+                                        </div>
+                                    </>
+                                )
+                            }
 
                             <div className="mb-3">
                                 <Form.Label htmlFor="title" className="form-label">Title</Form.Label>
