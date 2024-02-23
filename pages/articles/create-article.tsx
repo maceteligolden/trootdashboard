@@ -6,13 +6,23 @@ import { IBreadCrumb } from '@common/interfaces';
 import { Alert, Button, Col, Form, Row } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as Yup from "yup";
-import { GetServerSideProps } from 'next';
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import cookie from "cookie";
 import { pageRoutes } from 'lib/constants';
+import { getCategory } from 'lib/services/category.service';
+import { Category, CategoryTypes } from 'lib/models/category.model';
+import { Article } from 'lib/models';
+import { PaymentModel } from 'lib/models/article.model';
+import { createArticle } from 'lib/services/article.service';
 
-const CreateArticle = () => {
-
-    const [passwordtype, setPasswordtype] = useState<boolean>(true)
+const CreateArticle = ({
+    articleCategories
+  }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    const formData = new FormData();
+    const [isError, setError] = useState<boolean>(false);
+    const [isSuccess, setSuccess] = useState<boolean>(false);
+    const [selectedThumbnailFile, setSelectedThumbnailFile] = useState(null);
+    const [selectedArticleFile, setSelectedArticleFile] = useState(null);
 
     const breadcrumbItems: IBreadCrumb[] = [
         {
@@ -36,19 +46,42 @@ const CreateArticle = () => {
         enableReinitialize: true,
 
         initialValues: {
-            firstname: "",
-            lastname: "",
-            email: '',
-            password: '',
+            title: "",
+            description: "",
+            category: "",
+            payment_model: "",
+            thumbnail: null,
+            article: null
         },
         validationSchema: Yup.object({
-            email: Yup.string().required("Please Enter Your Email"),
-            password: Yup.string().required("Please Enter Your Password"),
-            firstname: Yup.string().required("Please Enter Your Firstname"),
-            lastname: Yup.string().required("Please Enter Your Lastname")
+            title: Yup.string().required("Please Enter Your Title"),
+            description: Yup.string().required("Please Enter Your Description"),
+            category: Yup.string().required("Please Enter Your Category"),
+            payment_model: Yup.string().required("Please Enter Your Payment Model"),
+            thumbnail: Yup.mixed().required("Please Enter Your Thumbnail"),
+            article: Yup.mixed().required("Please Enter Your Article"),
         }),
-        onSubmit: (values) => {
-         
+        onSubmit: async (values: any, {resetForm}) => {
+            try{
+                console.log("hello " +JSON.stringify(values.thumbnail))
+                setSuccess(false);
+                setError(false)
+              
+                formData.set('title', values.title);
+                formData.set('description', values.description);
+                formData.set('category', values.category);
+                formData.set('payment_model', values.payment_model);
+                formData.append('thumbnail', selectedThumbnailFile);
+                formData.append('article', selectedArticleFile);
+                await createArticle(formData);
+
+                resetForm({values: {}});
+
+                setSuccess(true);
+            } catch(err){
+                console.log(err.message)
+                setError(true);
+            }
         }
     });
 
@@ -57,95 +90,144 @@ const CreateArticle = () => {
             <Breadcrumb pageName="Create Article" items={breadcrumbItems}/>
             <Row className="px-0">
                 <Col lg={5}>
-                    {false && true ? (<Alert variant="danger"> error message goes here </Alert>) : null}
+                    {isError && isError ? (<Alert variant="danger"> Article name already taken </Alert>) : null}
+                    {isSuccess && isSuccess ? (<Alert variant="success"> New Article added </Alert>) : null}
                     <div className=" mt-5">
                         <Form
+                            encType="multipart/form-data"
+                            method="post"
                             onSubmit={(e) => {
                                 e.preventDefault();
                                 validation.handleSubmit();
                                 return false;
                             }}
-                        >
+                        >   
+                            <div className="mb-3">
+                                <Form.Label htmlFor="category" className="form-label">Category</Form.Label>
+                                <Form.Select
+                                     name="category"
+                                     value={validation.values.category}
+                                     onChange={validation.handleChange}
+                                     onBlur={validation.handleBlur}
+                                >
+                                    <option>Select Category</option>
+                                    { articleCategories && articleCategories.map((category: Category, index: number) => {
+                                        return (
+                                            <>
+                                                <option value={category._id} key={index}>{category.name}</option>
+                                            </>
+                                        )
+                                    })}
+                                </Form.Select>
+                                {validation.touched.category && validation.errors.category ? (
+                                    <Form.Control.Feedback type="invalid">{validation.errors.category.message}</Form.Control.Feedback>
+                                ) : null}
+                            </div>
 
                             <div className="mb-3">
-                                <Form.Label htmlFor="firstname" className="form-label">FirstName</Form.Label>
-                                <Form.Control className="form-control" id="firstname" placeholder="Enter firstname"
-                                    name="firstname"
+                                <Form.Label htmlFor="payment_model" className="form-label">Payment Model</Form.Label>
+                                <Form.Select
+                                     name="payment_model"
+                                     value={validation.values.payment_model}
+                                     onChange={validation.handleChange}
+                                     onBlur={validation.handleBlur}
+                                >
+                                    <option>Select Payment Model</option>
+                                   
+                                    <option value={PaymentModel.FREE}>{PaymentModel.FREE}</option>
+                                    <option value={PaymentModel.PREMIUM}>{PaymentModel.PREMIUM}</option>
+                                  
+                                </Form.Select>
+                                {validation.touched.payment_model && validation.errors.payment_model ? (
+                                    <Form.Control.Feedback type="invalid">{validation.errors.payment_model}</Form.Control.Feedback>
+                                ) : null}
+                            </div>
+
+                            <div className="mb-3">
+                                <Form.Label htmlFor="title" className="form-label">Title</Form.Label>
+                                <Form.Control className="form-control" id="title" placeholder="Enter title"
+                                    name="title"
                                     type="text"
                                     onChange={validation.handleChange}
                                     onBlur={validation.handleBlur}
-                                    value={validation.values.firstname || ""}
+                                    value={validation.values.title || ""}
                                     isInvalid={
-                                        validation.touched.firstname && validation.errors.firstname ? true : false
+                                        validation.touched.title && validation.errors.title ? true : false
                                     }
 
                                 />
-                                {validation.touched.firstname && validation.errors.firstname ? (
-                                    <Form.Control.Feedback type="invalid">{validation.errors.firstname}</Form.Control.Feedback>
+                                {validation.touched.title && validation.errors.title ? (
+                                    <Form.Control.Feedback type="invalid">{validation.errors.title}</Form.Control.Feedback>
                                 ) : null}
                             </div>
 
                             <div className="mb-3">
-                                <Form.Label htmlFor="lastname" className="form-label">LastName</Form.Label>
-                                <Form.Control className="form-control" id="lastname" placeholder="Enter lastname"
-                                    name="lastname"
+                                <Form.Label htmlFor="description" className="form-label">Description</Form.Label>
+                                <Form.Control className="form-control" id="description" placeholder="Enter description"
+                                    name="description"
                                     type="text"
                                     onChange={validation.handleChange}
                                     onBlur={validation.handleBlur}
-                                    value={validation.values.lastname || ""}
+                                    value={validation.values.description || ""}
                                     isInvalid={
-                                        validation.touched.lastname && validation.errors.lastname ? true : false
+                                        validation.touched.description && validation.errors.description ? true : false
                                     }
 
                                 />
-                                {validation.touched.lastname && validation.errors.lastname ? (
-                                    <Form.Control.Feedback type="invalid">{validation.errors.lastname}</Form.Control.Feedback>
+                                {validation.touched.description && validation.errors.description ? (
+                                    <Form.Control.Feedback type="invalid">{validation.errors.description}</Form.Control.Feedback>
                                 ) : null}
                             </div>
 
                             <div className="mb-3">
-                                <Form.Label htmlFor="email" className="form-label">Email</Form.Label>
-                                <Form.Control className="form-control" id="email" placeholder="Enter email"
-                                    name="email"
-                                    type="email"
-                                    onChange={validation.handleChange}
+                                <Form.Label htmlFor="thumbnail" className="form-label">Thumbnail</Form.Label>
+                                <Form.Control className="form-control" id="thumbnail" placeholder="Enter thumbnail"
+                                    name="thumbnail"
+                                    type="file"
+                                    onChange={(event) => {
+                                        validation.handleChange(event);
+                                        setSelectedThumbnailFile(event.target.files[0]);
+                                        console.log("event " + event.target.files[0]?.name)
+                                    }
+                                    }
                                     onBlur={validation.handleBlur}
-                                    value={validation.values.email || ""}
+                                    value={validation.values.thumbnail}
                                     isInvalid={
-                                        validation.touched.email && validation.errors.email ? true : false
+                                        validation.touched.thumbnail && validation.errors.thumbnail ? true : false
                                     }
-
+                                    accept=".jpg, .jpeg, .png"
                                 />
-                                {validation.touched.email && validation.errors.email ? (
-                                    <Form.Control.Feedback type="invalid">{validation.errors.email}</Form.Control.Feedback>
+                                {validation.touched.thumbnail && validation.errors.thumbnail ? (
+                                    <Form.Control.Feedback type="invalid">{validation.errors.thumbnail}</Form.Control.Feedback>
                                 ) : null}
                             </div>
 
                             <div className="mb-3">
-                            
-                                <Form.Label className="form-label" htmlFor="password-input">Password</Form.Label>
-                                <div className="position-relative auth-pass-inputgroup mb-3">
-                                    <Form.Control type={passwordtype ? "password" : "text"} className="form-control pe-5 password-input" placeholder="Enter password" id="password-input"
-                                        name="password"
-                                        value={validation.values.password || ""}
-                                        onChange={validation.handleChange}
-                                        onBlur={validation.handleBlur}
-                                        isInvalid={
-                                            validation.touched.password && validation.errors.password ? true : false
-                                        }
-                                    />
-                                    {validation.touched.password && validation.errors.password ? (
-                                        <Form.Control.Feedback type="invalid">{validation.errors.password}</Form.Control.Feedback>
-                                    ) : null}
-                                    <Button variant='link' className="position-absolute end-0 top-0 text-decoration-none text-muted password-addon" type="button" id="password-addon" onClick={() => setPasswordtype(!passwordtype)}><i className="ri-eye-fill align-middle"></i></Button>
-                                </div>
+                                <Form.Label htmlFor="article" className="form-label">Article</Form.Label>
+                                <Form.Control className="form-control" id="description" placeholder="Enter article"
+                                    name="article"
+                                    type="file"
+                                    onChange={(event) => {
+                                        validation.handleChange(event);
+                                        setSelectedArticleFile(event.target.files[0]);
+                                        console.log("event " + event.target.files[0]?.name)
+                                    }}
+                                    onBlur={validation.handleBlur}
+                                    value={validation.values.article}
+                                    isInvalid={
+                                        validation.touched.article && validation.errors.article ? true : false
+                                    }
+                                    accept=".pdf"
+                                />
+                                {validation.touched.article && validation.errors.article ? (
+                                    <Form.Control.Feedback type="invalid">{validation.errors.article}</Form.Control.Feedback>
+                                ) : null}
                             </div>
-
 
                             <div className="mt-4">
                                 <Button variant="primary" className="w-100" type="submit">
                                     {/* {error || loading ? <Spinner animation="border" size="sm" className="me-2"></Spinner> : null} */}
-                                    Create Account
+                                    Add Account
                                 </Button>
                             </div>
 
@@ -173,7 +255,7 @@ CreateArticle.getLayout = (page: ReactElement) => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const session = cookie.parse(context.req.headers.cookie || '');
- 
+    const articleCategories = await getCategory(CategoryTypes.ARTICLE);
     if (!session['token']) {
       return {
         redirect: {
@@ -184,7 +266,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
   
     return {
-      props: {},
+      props: {
+        articleCategories
+      },
     };
   };
   

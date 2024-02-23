@@ -2,15 +2,12 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { CategoryTypes } from "lib/models/category.model";
 
-const createArticle = async (description: string, name: string, type: CategoryTypes) => {
+const createArticle = async (values: any) => {
     const token = Cookies.get("token");
-    const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/article/add-article`, {
-        description,
-        name, 
-        type
-    },{
+    const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/article/add-article`, values,{
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data"
       }
     });
 
@@ -42,7 +39,7 @@ const getArticle = async (id: string) => {
     return response
 }
 
-const getArticles = async (id: string) => {
+const getArticles = async () => {
   const token = Cookies.get("token");
   const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/article`,{
     headers: {
