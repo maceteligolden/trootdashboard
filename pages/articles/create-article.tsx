@@ -216,7 +216,6 @@ const CreateArticle = ({
                                     onChange={(event) => {
                                         validation.handleChange(event);
                                         setSelectedThumbnailFile(event.target.files[0]);
-                                        console.log("event " + event.target.files[0]?.name)
                                     }
                                     }
                                     onBlur={validation.handleBlur}
@@ -239,7 +238,6 @@ const CreateArticle = ({
                                     onChange={(event) => {
                                         validation.handleChange(event);
                                         setSelectedArticleFile(event.target.files[0]);
-                                        console.log("event " + event.target.files[0]?.name)
                                     }}
                                     onBlur={validation.handleBlur}
                                     value={validation.values.article}
