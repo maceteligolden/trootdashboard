@@ -7,12 +7,15 @@ import Breadcrumb from '@common/Breadcrumb';
 import Taskbar from '@common/Taskbar';
 import { Button, Table } from 'react-bootstrap';
 import Link from 'next/link';
-import { getSession } from 'next-auth/react';
-import { GetServerSideProps } from 'next';
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import cookie from "cookie";
 import { pageRoutes } from 'lib/constants';
+import { getOrders } from 'lib/services/order.service';
+import { Order } from 'lib/models';
 
-const Orders = () => {
+const Orders = ({
+    orders
+  }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     const router = useRouter();
 
     const breadcrumbItems: IBreadCrumb[] = [
@@ -30,78 +33,38 @@ const Orders = () => {
     return (
         <React.Fragment>
             <Breadcrumb pageName="Orders" items={breadcrumbItems}/>
-            <Taskbar>
+            {/* <Taskbar>
                 <Button variant="primary" className="w-10" onClick={() => {
                     router.push("/orders/create-order")
                 }}>
                     Add Order
                 </Button>
-            </Taskbar>
+            </Taskbar> */}
             <div className="table-responsive">
                 <Table className="table-borderless align-middle table-nowrap mb-0">
                     <thead>
                         <tr>
-                            <th scope="col">ID</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Job Title</th>
-                            <th scope="col">Date</th>
+                            <th scope="col">Reference No</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Transaction Type</th>
+                            <th scope="col">Amount</th>
                             <th scope="col">Status</th>
-                            <th scope="col"></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td className="fw-medium">01</td>
-                            <td>Annette Black</td>
-                            <td>Industrial Designer</td>
-                            <td>10, Nov 2021</td>
-                            <td><span className="badge badge-soft-success">Active</span></td>
-                            <td>
-                                <div className="hstack gap-3 fs-15">
-                                    <Link href="#" className="link-primary"><i className="ri-settings-4-line"></i></Link>
-                                    <Link href="#" className="link-danger"><i className="ri-delete-bin-5-line"></i></Link>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td className="fw-medium">02</td>
-                            <td>Bessie Cooper</td>
-                            <td>Graphic Designer</td>
-                            <td>13, Nov 2021</td>
-                            <td><span className="badge badge-soft-success">Active</span></td>
-                            <td>
-                                <div className="hstack gap-3 fs-15">
-                                    <Link href="#" className="link-primary"><i className="ri-settings-4-line"></i></Link>
-                                    <Link href="#" className="link-danger"><i className="ri-delete-bin-5-line"></i></Link>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td className="fw-medium">03</td>
-                            <td>Leslie Alexander</td>
-                            <td>Product Manager</td>
-                            <td>17, Nov 2021</td>
-                            <td><span className="badge badge-soft-success">Active</span></td>
-                            <td>
-                                <div className="hstack gap-3 fs-15">
-                                    <Link href="#" className="link-primary"><i className="ri-settings-4-line"></i></Link>
-                                    <Link href="#" className="link-danger"><i className="ri-delete-bin-5-line"></i></Link>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td className="fw-medium">04</td>
-                            <td>Lenora Sandoval</td>
-                            <td>Applications Engineer</td>
-                            <td>25, Nov 2021</td>
-                            <td><span className="badge badge-soft-danger">Disabled</span></td>
-                            <td>
-                                <div className="hstack gap-3 fs-15">
-                                    <Link href="#" className="link-primary"><i className="ri-settings-4-line"></i></Link>
-                                    <Link href="#" className="link-danger"><i className="ri-delete-bin-5-line"></i></Link>
-                                </div>
-                            </td>
-                        </tr>
+                        {orders && orders.map((order: Order)=> {
+                            return (
+                                <>
+                                    <tr>
+                                        <td className="fw-medium">{order.reference_no}</td>
+                                        <td>{order.customer_email}</td>
+                                        <td>{order.transaction_type}</td>
+                                        <td>{order.amount}</td>
+                                        <td><span className="badge badge-soft-success">{order.status}</span></td>
+                                    </tr>
+                                </>
+                            )
+                        })}
                     </tbody>
                 </Table>
             </div>
@@ -122,7 +85,8 @@ Orders.getLayout = (page: ReactElement) => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const session = cookie.parse(context.req.headers.cookie || '');
- 
+    const orders = await getOrders();
+
     if (!session['token']) {
       return {
         redirect: {
@@ -133,7 +97,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
   
     return {
-      props: {},
+      props: {
+        orders
+      },
     };
 };
 

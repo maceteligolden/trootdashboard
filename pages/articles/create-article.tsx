@@ -11,9 +11,15 @@ import cookie from "cookie";
 import { pageRoutes } from 'lib/constants';
 import { getCategory } from 'lib/services/category.service';
 import { Category, CategoryTypes } from 'lib/models/category.model';
-import { Article } from 'lib/models';
+import { useEditor, EditorContent } from '@tiptap/react'
+import StarterKit from '@tiptap/starter-kit'
 import { PaymentModel } from 'lib/models/article.model';
 import { createArticle } from 'lib/services/article.service';
+import Document from '@tiptap/extension-document';
+import Dropcursor from '@tiptap/extension-dropcursor';
+import Paragraph from '@tiptap/extension-paragraph';
+import Text from '@tiptap/extension-text';
+
 
 const CreateArticle = ({
     articleCategories
@@ -23,6 +29,8 @@ const CreateArticle = ({
     const [isSuccess, setSuccess] = useState<boolean>(false);
     const [selectedThumbnailFile, setSelectedThumbnailFile] = useState(null);
     const [selectedArticleFile, setSelectedArticleFile] = useState(null);
+    const [content, setContent] = useState<string>("");
+    const [contentStatus, setContentStatus] = useState<boolean>(true);
 
     const breadcrumbItems: IBreadCrumb[] = [
         {
@@ -47,7 +55,6 @@ const CreateArticle = ({
 
         initialValues: {
             title: "",
-            description: "",
             category: "",
             amount: "",
             payment_model: "",
@@ -56,7 +63,6 @@ const CreateArticle = ({
         },
         validationSchema: Yup.object({
             title: Yup.string().required("Please Enter Your Title"),
-            description: Yup.string().required("Please Enter Your Description"),
             amount: Yup.string(),
             category: Yup.string().required("Please Enter Your Category"),
             payment_model: Yup.string().required("Please Enter Your Payment Model"),
@@ -65,30 +71,45 @@ const CreateArticle = ({
         }),
         onSubmit: async (values: any, {resetForm}) => {
             try{
-                console.log("hello " +JSON.stringify(values))
                 setSuccess(false);
+                // setContentStatus(false);
                 setError(false)
-              
-                formData.set('title', values.title);
-                formData.set('description', values.description);
-                formData.set('category', values.category);
-                formData.set('payment_model', values.payment_model);
-                formData.append('thumbnail', selectedThumbnailFile);
-                formData.append('article', selectedArticleFile);
-                if(values.amount) {
-                    formData.set('amount', values.amount.toString())
+                if(!contentStatus) {
+                    formData.set('title', values.title);
+                    formData.set('description', content);
+                    formData.set('category', values.category);
+                    formData.set('payment_model', values.payment_model);
+                    formData.append('thumbnail', selectedThumbnailFile);
+                    formData.append('article', selectedArticleFile);
+                    if(values.amount) {
+                        formData.set('amount', values.amount.toString())
+                    }
+                    await createArticle(formData);    
+
+                    resetForm({values: {}});
+                    setContentStatus(true)
+                    setSuccess(true);
+                } else {
+                    
                 }
-                await createArticle(formData);
-
-                resetForm({values: {}});
-
-                setSuccess(true);
             } catch(err){
-                console.log(err.message)
                 setError(true);
             }
         }
     });
+
+    const editor = useEditor({
+        extensions: [
+          StarterKit,
+          Document, Paragraph, Text, Dropcursor
+        ],
+        content: content,
+        onUpdate: (props: any) => {
+            setContent(props.editor.getHTML());
+            setContentStatus(false)
+        }
+    });
+
 
     return (
         <React.Fragment>
@@ -191,24 +212,6 @@ const CreateArticle = ({
                             </div>
 
                             <div className="mb-3">
-                                <Form.Label htmlFor="description" className="form-label">Description</Form.Label>
-                                <Form.Control className="form-control" id="description" placeholder="Enter description"
-                                    name="description"
-                                    type="text"
-                                    onChange={validation.handleChange}
-                                    onBlur={validation.handleBlur}
-                                    value={validation.values.description || ""}
-                                    isInvalid={
-                                        validation.touched.description && validation.errors.description ? true : false
-                                    }
-
-                                />
-                                {validation.touched.description && validation.errors.description ? (
-                                    <Form.Control.Feedback type="invalid">{validation.errors.description}</Form.Control.Feedback>
-                                ) : null}
-                            </div>
-
-                            <div className="mb-3">
                                 <Form.Label htmlFor="thumbnail" className="form-label">Thumbnail</Form.Label>
                                 <Form.Control className="form-control" id="thumbnail" placeholder="Enter thumbnail"
                                     name="thumbnail"
@@ -249,6 +252,28 @@ const CreateArticle = ({
                                 {validation.touched.article && validation.errors.article ? (
                                     <Form.Control.Feedback type="invalid">{validation.errors.article}</Form.Control.Feedback>
                                 ) : null}
+                            </div>
+
+                            <div className="mb-3">
+                                <Form.Label htmlFor="description" className="form-label">Description</Form.Label>
+                             
+                                <EditorContent editor={editor} />
+                                {/* <Form.Control className="form-control" id="description" placeholder="Enter description"
+                                    name="description"
+                                    type="text"
+                                    onChange={validation.handleChange}
+                                    onBlur={validation.handleBlur}
+                                    value={validation.values.description || ""}
+                                    isInvalid={
+                                        validation.touched.description && validation.errors.description ? true : false
+                                    }
+
+                                /> */}
+
+                                {contentStatus ? (
+                                    <Form.Control.Feedback type="invalid">Description is missing</Form.Control.Feedback>
+                                ) : null}
+                               
                             </div>
 
                             <div className="mt-4">
