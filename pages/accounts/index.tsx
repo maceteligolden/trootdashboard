@@ -18,6 +18,7 @@ import { formatDate } from 'lib/utils/formatDate';
 const Accounts = ({
     accounts
   }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    console.log("accounts: " + JSON.stringify(accounts));
     const router = useRouter();
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [ isDeleted, setIsDeleted] = useState<boolean>(false);
