@@ -29,7 +29,6 @@ import type { NextComponentType, NextPage } from 'next';
 
 // Fake backend
 import fakeBackend from "Components/helpers/AuthType/fakeBackend";
-import { wrapperToolkit } from "lib/statemanagement/store";
 
 // Activating fake backend
 fakeBackend();
