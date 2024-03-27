@@ -7,7 +7,6 @@ import Breadcrumb from '@common/Breadcrumb';
 import Taskbar from '@common/Taskbar';
 import { Alert, Button, Table } from 'react-bootstrap';
 import Link from 'next/link';
-import { getSession } from 'next-auth/react';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import cookie from "cookie";
 import { pageRoutes } from 'lib/constants';
@@ -87,7 +86,7 @@ const Articles = ({
                                 <>
                         <tr>
                             <td className="fw-medium">{article.title}</td>
-                            <td>{article.payment_model}</td>
+                            <td><span className={article.payment_model === "FREE" ? `badge badge-soft-success`: `badge badge-soft-primary`}>{article.payment_model}</span></td>
                             <td>{article.category ? article.category.name : "UNKNOWN"}</td>
                             <td>{formatDate(article.created_at)}</td>
                             <td>{formatDate(article.updated_at)}</td>
