@@ -14,13 +14,23 @@ import { createBlog } from 'lib/services/blog.service';
 import TextInput from 'Components/form/TextInput';
 import { Category, CategoryTypes } from 'lib/models/category.model';
 import { getCategory } from 'lib/services/category.service';
+import { EditorContent, useEditor } from '@tiptap/react';
+import Dropcursor from '@tiptap/extension-dropcursor';
+import Paragraph from '@tiptap/extension-paragraph';
+import StarterKit from '@tiptap/starter-kit';
+import Text from '@tiptap/extension-text';
+import Document from '@tiptap/extension-document';
+
 
 const CreateBlog =  ({
     blogCategories
   }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-
+    const formData = new FormData();
     const [isError, setError] = useState<boolean>(false);
     const [isSuccess, setSuccess] = useState<boolean>(false);
+    const [content, setContent] = useState<string>("");
+    const [contentStatus, setContentStatus] = useState<boolean>(true);
+    const [selectedThumbnailFile, setSelectedThumbnailFile] = useState(null);
 
     const breadcrumbItems: IBreadCrumb[] = [
         {
@@ -44,26 +54,46 @@ const CreateBlog =  ({
         initialValues: {
             title: "",
             content: "",
-            category: ''
+            category: '',
+            thumbnail: null,
         },
         validationSchema: Yup.object({
             title: Yup.string().required("Please Enter Your Blog Title"),
             content: Yup.string().required("Please Enter Your Blog Content"),
+            thumbnail: Yup.mixed().required("Please Enter Your Thumbnail"),
             category: Yup.string().required("Please Enter Your Category")
         }),
-        onSubmit: async (values: Blog, {resetForm}) => {
+        onSubmit: async (values: any, {resetForm}) => {
             try{
                 setSuccess(false);
                 setError(false)
-              
-                await createBlog(values);
-
+                if(!contentStatus) {
+                    formData.set('title', values.title);
+                    formData.set('description', content);
+                    formData.set('category', values.category);
+                    formData.append('thumbnail', selectedThumbnailFile);
+                    await createBlog(formData);
+                } else {
+                    
+                }
                 resetForm({values: {}});
 
                 setSuccess(true);
             } catch(err){
                 setError(true);
             }
+        }
+    });
+
+    const editor = useEditor({
+        extensions: [
+          StarterKit,
+          Document, Paragraph, Text, Dropcursor
+        ],
+        content: content,
+        onUpdate: (props: any) => {
+            setContent(props.editor.getHTML());
+            setContentStatus(false)
         }
     });
 
@@ -103,6 +133,29 @@ const CreateBlog =  ({
                                     <Form.Control.Feedback type="invalid">{validation.errors.category}</Form.Control.Feedback>
                                 ) : null}
                             </div>
+
+                            <div className="mb-3">
+                                <Form.Label htmlFor="thumbnail" className="form-label">Thumbnail</Form.Label>
+                                <Form.Control className="form-control" id="thumbnail" placeholder="Enter thumbnail"
+                                    name="thumbnail"
+                                    type="file"
+                                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                        validation.handleChange(event);
+                                        setSelectedThumbnailFile(event.target.files[0]);
+                                    }
+                                    }
+                                    onBlur={validation.handleBlur}
+                                    value={validation.values.thumbnail}
+                                    isInvalid={
+                                        validation.touched.thumbnail && validation.errors.thumbnail ? true : false
+                                    }
+                                    accept=".jpg, .jpeg, .png"
+                                />
+                                {validation.touched.thumbnail && validation.errors.thumbnail ? (
+                                    <Form.Control.Feedback type="invalid">{validation.errors.thumbnail}</Form.Control.Feedback>
+                                ) : null}
+                            </div>
+
                             <TextInput
                                 label={"Title"}
                                 name="title"
@@ -114,16 +167,16 @@ const CreateBlog =  ({
                                 errors={validation.errors.title}
                             />
 
-                            <TextInput
-                                label={"Content"}
-                                name="content"
-                                placeholder="Enter Content"
-                                onChange={validation.handleChange}
-                                onBlur={validation.handleBlur}
-                                value={validation.values.content}
-                                isInvalid={validation.touched.content && validation.errors.content}
-                                errors={validation.errors.content}
-                            />
+                            <div className="mb-3">
+                                <Form.Label htmlFor="description" className="form-label">Description</Form.Label>
+                             
+                                <EditorContent editor={editor} />
+
+                                {contentStatus ? (
+                                    <Form.Control.Feedback type="invalid">Description is missing</Form.Control.Feedback>
+                                ) : null}
+                               
+                            </div>
 
 
                             <div className="mt-4">
