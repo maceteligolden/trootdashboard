@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 import { apiRoutes } from "lib/constants";
 import { Blog } from "lib/models";
 
-const createBlog = async (payload: Blog) => {
+const createBlog = async (payload: any) => {
     const token = Cookies.get("token");
     const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}${apiRoutes.blogs.create}`, {
       ...payload
