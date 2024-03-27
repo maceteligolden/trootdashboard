@@ -216,7 +216,7 @@ const CreateArticle = ({
                                 <Form.Control className="form-control" id="thumbnail" placeholder="Enter thumbnail"
                                     name="thumbnail"
                                     type="file"
-                                    onChange={(event) => {
+                                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                                         validation.handleChange(event);
                                         setSelectedThumbnailFile(event.target.files[0]);
                                     }
@@ -238,7 +238,7 @@ const CreateArticle = ({
                                 <Form.Control className="form-control" id="description" placeholder="Enter article"
                                     name="article"
                                     type="file"
-                                    onChange={(event) => {
+                                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                                         validation.handleChange(event);
                                         setSelectedArticleFile(event.target.files[0]);
                                     }}
