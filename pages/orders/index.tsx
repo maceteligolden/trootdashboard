@@ -52,7 +52,7 @@ const Orders = ({
                         </tr>
                     </thead>
                     <tbody>
-                        {orders && orders.map((order: Order)=> {
+                        {orders && orders.data.map((order: Order)=> {
                             return (
                                 <>
                                     <tr>

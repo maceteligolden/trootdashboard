@@ -88,7 +88,7 @@ const ArticlesCategories = ({
                         </tr>
                     </thead>
                     <tbody>
-                        {articleCategories && articleCategories.map((category: Category)=> {
+                        {articleCategories && articleCategories.data.map((category: Category)=> {
                             return (
                                 <>
                                     <tr>

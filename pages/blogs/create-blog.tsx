@@ -3,7 +3,7 @@ import Head from 'next/head';
 import Layout from '@common/Layout';
 import Breadcrumb from '@common/Breadcrumb';
 import { IBreadCrumb } from '@common/interfaces';
-import { Alert, Button, Col, Form, Row } from 'react-bootstrap';
+import { Alert, Button, Col, Form, Row, Spinner } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as Yup from "yup";
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
@@ -28,6 +28,7 @@ const CreateBlog =  ({
     const formData = new FormData();
     const [isError, setError] = useState<boolean>(false);
     const [isSuccess, setSuccess] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
     const [content, setContent] = useState<string>("");
     const [contentStatus, setContentStatus] = useState<boolean>(true);
     const [selectedThumbnailFile, setSelectedThumbnailFile] = useState(null);
@@ -50,37 +51,38 @@ const CreateBlog =  ({
     ];
 
     const validation: any = useFormik({
-
         initialValues: {
             title: "",
-            content: "",
-            category: '',
+            category: "",
             thumbnail: null,
         },
         validationSchema: Yup.object({
             title: Yup.string().required("Please Enter Your Blog Title"),
-            content: Yup.string().required("Please Enter Your Blog Content"),
             thumbnail: Yup.mixed().required("Please Enter Your Thumbnail"),
             category: Yup.string().required("Please Enter Your Category")
         }),
         onSubmit: async (values: any, {resetForm}) => {
             try{
+                console.log("values: " + values)
                 setSuccess(false);
-                setError(false)
+                setError(false);
+                setLoading(true);
                 if(!contentStatus) {
                     formData.set('title', values.title);
-                    formData.set('description', content);
+                    formData.set('content', content);
                     formData.set('category', values.category);
                     formData.append('thumbnail', selectedThumbnailFile);
-                    await createBlog(formData);
+                    await createBlog(formData)
                 } else {
                     
                 }
                 resetForm({values: {}});
-
                 setSuccess(true);
+                setLoading(false);
             } catch(err){
+                console.log("error: " + JSON.stringify(err));
                 setError(true);
+                setLoading(false);
             }
         }
     });
@@ -106,6 +108,8 @@ const CreateBlog =  ({
                     {isSuccess && isSuccess ? (<Alert variant="success"> New blog added </Alert>) : null}
                     <div className=" mt-5">
                         <Form
+                            encType="multipart/form-data"
+                            method="post"
                             onSubmit={(e) => {
                                 e.preventDefault();
                                 validation.handleSubmit();
@@ -113,7 +117,7 @@ const CreateBlog =  ({
                             }}
                         >
                             <div className="mb-3">
-                                <Form.Label htmlFor="firstname" className="form-label">Category</Form.Label>
+                                <Form.Label htmlFor="category" className="form-label">Category</Form.Label>
                                 <Form.Select
                                      name="category"
                                      value={validation.values.category}
@@ -121,7 +125,7 @@ const CreateBlog =  ({
                                      onBlur={validation.handleBlur}
                                 >
                                     <option>Select Category</option>
-                                    { blogCategories && blogCategories.map((category: Category, index: number) => {
+                                    { blogCategories && blogCategories.data.map((category: Category, index: number) => {
                                         return (
                                             <>
                                                 <option value={category._id} key={index}>{category.name}</option>
@@ -130,7 +134,7 @@ const CreateBlog =  ({
                                     })}
                                 </Form.Select>
                                 {validation.touched.category && validation.errors.category ? (
-                                    <Form.Control.Feedback type="invalid">{validation.errors.category}</Form.Control.Feedback>
+                                    <Form.Control.Feedback type="invalid">{validation.errors.category.message}</Form.Control.Feedback>
                                 ) : null}
                             </div>
 
@@ -156,16 +160,23 @@ const CreateBlog =  ({
                                 ) : null}
                             </div>
 
-                            <TextInput
-                                label={"Title"}
-                                name="title"
-                                placeholder="Enter Title"
-                                onChange={validation.handleChange}
-                                onBlur={validation.handleBlur}
-                                value={validation.values.title}
-                                isInvalid={validation.touched.title && validation.errors.title}
-                                errors={validation.errors.title}
-                            />
+                            <div className="mb-3">
+                                <Form.Label htmlFor="title" className="form-label">Title</Form.Label>
+                                <Form.Control className="form-control" id="title" placeholder="Enter title"
+                                    name="title"
+                                    type="text"
+                                    onChange={validation.handleChange}
+                                    onBlur={validation.handleBlur}
+                                    value={validation.values.title || ""}
+                                    isInvalid={
+                                        validation.touched.title && validation.errors.title ? true : false
+                                    }
+
+                                />
+                                {validation.touched.title && validation.errors.title ? (
+                                    <Form.Control.Feedback type="invalid">{validation.errors.title}</Form.Control.Feedback>
+                                ) : null}
+                            </div>
 
                             <div className="mb-3">
                                 <Form.Label htmlFor="description" className="form-label">Description</Form.Label>
@@ -181,8 +192,8 @@ const CreateBlog =  ({
 
                             <div className="mt-4">
                                 <Button variant="primary" className="w-100" type="submit">
-                                    {/* {error || loading ? <Spinner animation="border" size="sm" className="me-2"></Spinner> : null} */}
-                                    Create Blog
+                                    {/* {isLoading ? <Spinner animation="border" size="sm" className="me-2"></Spinner> : null} */}
+                                    {loading ? <Spinner animation="border" size="sm" className="me-2"></Spinner> : "Add Blog"}
                                 </Button>
                             </div>
 

@@ -98,7 +98,7 @@ const UpdateBlog = ({
                                      onBlur={validation.handleBlur}
                                 >
                                     <option>Select Category</option>
-                                    { blogCategories && blogCategories.map((category: Category, index: number) => {
+                                    { blogCategories && blogCategories.data.map((category: Category, index: number) => {
                                         return (
                                             <>
                                                 <option value={category._id} key={index}>{category.name}</option>
@@ -136,7 +136,7 @@ const UpdateBlog = ({
                             <div className="mt-4">
                                 <Button variant="primary" className="w-100" type="submit">
                                     {/* {error || loading ? <Spinner animation="border" size="sm" className="me-2"></Spinner> : null} */}
-                                    Create Blog
+                                    Update Blog
                                 </Button>
                             </div>
 

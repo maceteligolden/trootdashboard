@@ -2,6 +2,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { apiRoutes } from "lib/constants";
 import { Account, Blog } from "lib/models";
+import { IResponse } from "lib/models/response.model";
 
 const createAccount = async (payload: Account) => {
     const token = Cookies.get("token");

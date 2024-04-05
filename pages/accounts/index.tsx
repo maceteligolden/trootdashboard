@@ -83,7 +83,7 @@ const Accounts = ({
                         </tr>
                     </thead>
                     <tbody>
-                        {accounts && accounts.map((account: Account)=> {
+                        {accounts && accounts.data.map((account: Account)=> {
                             return (
                                 <>
                                 <tr>

@@ -3,7 +3,7 @@ import Head from 'next/head';
 import Layout from '@common/Layout';
 import Breadcrumb from '@common/Breadcrumb';
 import { IBreadCrumb } from '@common/interfaces';
-import { Alert, Button, Col, Form, Row } from 'react-bootstrap';
+import { Alert, Button, Col, Form, Row, Spinner } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as Yup from "yup";
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
@@ -26,6 +26,7 @@ const CreateArticle = ({
   }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     const formData = new FormData();
     const [isError, setError] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
     const [isSuccess, setSuccess] = useState<boolean>(false);
     const [selectedThumbnailFile, setSelectedThumbnailFile] = useState(null);
     const [selectedArticleFile, setSelectedArticleFile] = useState(null);
@@ -71,6 +72,7 @@ const CreateArticle = ({
         }),
         onSubmit: async (values: any, {resetForm}) => {
             try{
+                setLoading(true);
                 setSuccess(false);
                 // setContentStatus(false);
                 setError(false)
@@ -89,10 +91,13 @@ const CreateArticle = ({
                     resetForm({values: {}});
                     setContentStatus(true)
                     setSuccess(true);
+                    setLoading(false)
                 } else {
                     
                 }
             } catch(err){
+                setLoading(false)
+                console.log("error: " + JSON.stringify(err));
                 setError(true);
             }
         }
@@ -137,7 +142,7 @@ const CreateArticle = ({
                                      onBlur={validation.handleBlur}
                                 >
                                     <option>Select Category</option>
-                                    { articleCategories && articleCategories.map((category: Category, index: number) => {
+                                    { articleCategories && articleCategories.data.map((category: Category, index: number) => {
                                         return (
                                             <>
                                                 <option value={category._id} key={index}>{category.name}</option>
@@ -258,17 +263,6 @@ const CreateArticle = ({
                                 <Form.Label htmlFor="description" className="form-label">Description</Form.Label>
                              
                                 <EditorContent editor={editor} />
-                                {/* <Form.Control className="form-control" id="description" placeholder="Enter description"
-                                    name="description"
-                                    type="text"
-                                    onChange={validation.handleChange}
-                                    onBlur={validation.handleBlur}
-                                    value={validation.values.description || ""}
-                                    isInvalid={
-                                        validation.touched.description && validation.errors.description ? true : false
-                                    }
-
-                                /> */}
 
                                 {contentStatus ? (
                                     <Form.Control.Feedback type="invalid">Description is missing</Form.Control.Feedback>
@@ -279,7 +273,7 @@ const CreateArticle = ({
                             <div className="mt-4">
                                 <Button variant="primary" className="w-100" type="submit">
                                     {/* {error || loading ? <Spinner animation="border" size="sm" className="me-2"></Spinner> : null} */}
-                                    Add Account
+                                    {loading ? <Spinner animation="border" size="sm" className="me-2"></Spinner> : "Add Article"}
                                 </Button>
                             </div>
 

@@ -80,7 +80,7 @@ const Blogs = ({
                         </tr>
                     </thead>
                     <tbody>
-                        {blogs && blogs.map((blog: Blog)=> {
+                        {blogs && blogs.data.map((blog: Blog)=> {
                             return (
                                 <>
                                     <tr>

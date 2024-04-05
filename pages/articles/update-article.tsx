@@ -146,7 +146,7 @@ const UpdateArticle = () => {
                             <div className="mt-4">
                                 <Button variant="primary" className="w-100" type="submit">
                                     {/* {error || loading ? <Spinner animation="border" size="sm" className="me-2"></Spinner> : null} */}
-                                    Create Account
+                                    Update Article
                                 </Button>
                             </div>
 
