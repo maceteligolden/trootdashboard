@@ -7,7 +7,8 @@ const createBlog = async (payload: any) => {
     const token = Cookies.get("token");
     const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}${apiRoutes.blogs.create}`, payload,{
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data"
       }
     });
 
