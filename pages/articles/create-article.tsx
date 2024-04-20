@@ -19,6 +19,8 @@ import Document from '@tiptap/extension-document';
 import Dropcursor from '@tiptap/extension-dropcursor';
 import Paragraph from '@tiptap/extension-paragraph';
 import Text from '@tiptap/extension-text';
+import TagsInput from 'Components/form/TagsInput';
+import { Tag } from 'lib/models';
 
 
 const CreateArticle = ({
@@ -32,6 +34,11 @@ const CreateArticle = ({
     const [selectedArticleFile, setSelectedArticleFile] = useState(null);
     const [content, setContent] = useState<string>("");
     const [contentStatus, setContentStatus] = useState<boolean>(true);
+    const [tags, setTags] = useState<Tag[]>([]);
+
+    const updateTagsState = (tags: Tag[]) => {
+        setTags(tags)
+    }
 
     const breadcrumbItems: IBreadCrumb[] = [
         {
@@ -59,12 +66,14 @@ const CreateArticle = ({
             category: "",
             amount: "",
             payment_model: "",
+            tags: [],
             thumbnail: null,
             article: null
         },
         validationSchema: Yup.object({
             title: Yup.string().required("Please Enter Your Title"),
             amount: Yup.string(),
+            tags: Yup.array(),
             category: Yup.string().required("Please Enter Your Category"),
             payment_model: Yup.string().required("Please Enter Your Payment Model"),
             thumbnail: Yup.mixed().required("Please Enter Your Thumbnail"),
@@ -81,6 +90,7 @@ const CreateArticle = ({
                     formData.set('description', content);
                     formData.set('category', values.category);
                     formData.set('payment_model', values.payment_model);
+                    formData.set('tags', JSON.stringify(tags));
                     formData.append('thumbnail', selectedThumbnailFile);
                     formData.append('article', selectedArticleFile);
                     if(values.amount) {
@@ -257,6 +267,12 @@ const CreateArticle = ({
                                 {validation.touched.article && validation.errors.article ? (
                                     <Form.Control.Feedback type="invalid">{validation.errors.article}</Form.Control.Feedback>
                                 ) : null}
+                            </div>
+
+                            <div className="mb-3">
+                                <Form.Label htmlFor="tags" className="form-label">Tags</Form.Label>
+                             
+                                <TagsInput tags={tags} setTags={updateTagsState}/>
                             </div>
 
                             <div className="mb-3">
